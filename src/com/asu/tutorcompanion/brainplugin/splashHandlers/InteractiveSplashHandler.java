@@ -45,7 +45,7 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 	public InteractiveSplashHandler() {
 		fCompositeLogin = null;
 		fTextUsername = null;
-		fTextCoursename = null;
+		fTextCoursename.setText("ASUCSE");
 		fButtonOK = null;
 		fButtonCancel = null;
 		fAuthenticated = false;
