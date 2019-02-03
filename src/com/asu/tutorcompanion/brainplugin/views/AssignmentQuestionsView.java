@@ -52,7 +52,7 @@ public class AssignmentQuestionsView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "com.example.tutorhelpplugin.views.SampleView";
+	public static final String ID = "com.asu.tutorcompanion.brainplugin.views.SampleView";
 	private static String emptyListLabel = "List is Empty.";
 	private TableViewer viewer;
 	private Action refreshAction;
@@ -98,7 +98,7 @@ public class AssignmentQuestionsView extends ViewPart {
 		viewer.setLabelProvider(new ViewLabelProvider());
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "com.example.TutorHelpPlugin.viewer");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "com.asu.tutorcompanion.brainplugin.viewer");
 		getSite().setSelectionProvider(viewer);
 		makeActions();
 		hookContextMenu();

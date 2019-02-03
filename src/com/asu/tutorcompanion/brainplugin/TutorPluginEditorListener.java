@@ -25,6 +25,7 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
+import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsViewClient;
 
 /**
@@ -65,8 +66,10 @@ public class TutorPluginEditorListener implements IPartListener2 {
 		            	TutorPluginLogTracker.assignmentName = assignmentName;
 		            	
 					    AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-					    svc.sendLogClient(lines);
-						
+//					    svc.sendLogClient(lines);
+		            	Input input = new Input();
+			    		 input.setNumberRunAttempts(2);
+			    		 svc.sendInput(input);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -116,7 +119,10 @@ public class TutorPluginEditorListener implements IPartListener2 {
 	            	TutorPluginLogTracker.assignmentName = assignmentName;
 	            	
 				    AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-				    svc.sendLogClient(lines);
+//				    svc.sendLogClient(lines);
+				    Input input = new Input();
+		    		 input.setNumberRunAttempts(2);
+		    		 svc.sendInput(input);
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -184,7 +190,10 @@ public class TutorPluginEditorListener implements IPartListener2 {
             	                	TutorPluginLogTracker.assignmentName = assignmentName;
             	    			    
             	    			    AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-            	    			    svc.sendLogClient(lines);
+//            	    			    svc.sendLogClient(lines);
+            	    			    Input input2 = new Input();
+            	   	    		 	input2.setNumberRunAttempts(2);
+            	   	    		 	svc.sendInput(input2);
             	    				
             	    			} catch (IOException e) {
             	    				// TODO Auto-generated catch block
@@ -233,7 +242,10 @@ public class TutorPluginEditorListener implements IPartListener2 {
                 	TutorPluginLogTracker.assignmentName = assignmentName;
                 	
     			    AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-    			    svc.sendLogClient(lines);
+//    			    svc.sendLogClient(lines);
+    			    Input input3 = new Input();
+   	    		 	input3.setNumberRunAttempts(2);
+   	    		 	svc.sendInput(input3);
     				
     			} catch (IOException e) {
     				// TODO Auto-generated catch block

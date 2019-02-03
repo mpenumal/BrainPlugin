@@ -9,6 +9,7 @@ import org.eclipse.debug.ui.console.IConsoleLineTracker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 
+import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsViewClient;
 
 public class TutorPluginLogTracker implements IConsoleLineTracker {
@@ -33,17 +34,18 @@ public class TutorPluginLogTracker implements IConsoleLineTracker {
             	String line = m_console.getDocument().get(region.getOffset(), region.getLength());
             	line = line.trim();
             	
+            	Input input = new Input();
+            	
             	if (!line.equals("")) {
             		List<String> lines = Collections.singletonList(line.trim()); 
+            		
+            		input.setAssignmentCompletedSuccessfully(lines.get(0).equalsIgnoreCase("Success!") ? 1 : 0);
                 	
-                	AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-    			    svc.sendLogClient(lines);
+//                	AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
+//    			    svc.sendLogClient(lines);
             	}
 				
 			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {

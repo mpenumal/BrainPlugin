@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -24,6 +23,7 @@ import org.json.JSONTokener;
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
 import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.splashHandlers.InteractiveSplashHandler;
+import com.google.gson.Gson;
 
 public class AssignmentQuestionsViewClient {
 	
@@ -44,8 +44,8 @@ public class AssignmentQuestionsViewClient {
 		// Assignment 1 Setup
 		String assignment1 = getAssignment1();
 		String assingment1_name = "ConditionalStatement.java";
-		String assignment1_startDate = "2/3/2019";
-		String assignment1_endDate = "2/23/2019";
+		String assignment1_startDate = "2019/02/03 00:00:00";
+		String assignment1_endDate = "2019/02/24 00:00:00";
 		File assignment1_dest = new File(directoryPath + File.separator + assingment1_name);
 		if (!assignment1_dest.exists() || assignment1_dest.isDirectory()) {
 			try (FileWriter file = new FileWriter(directoryPath + File.separator + assingment1_name)) {
@@ -59,7 +59,7 @@ public class AssignmentQuestionsViewClient {
 		if (!assignment1_metadata.exists() || assignment1_metadata.isDirectory()) {
 			try (FileWriter file = new FileWriter(directoryPath + File.separator + assingment1_name.split("\\.")[0] + "_" + "metadata" + ".txt")) {
 				String str = "AssignmentName--"+assingment1_name.split("\\.")[0]+System.lineSeparator();
-				//str += "CourseName--"+courseName+System.lineSeparator();
+				str += "CourseName--"+userCourseName+System.lineSeparator();
 				str += "StartDate--"+assignment1_startDate+System.lineSeparator();
 				str += "EndDate--"+assignment1_endDate+System.lineSeparator();
 				file.write(str);
@@ -75,8 +75,8 @@ public class AssignmentQuestionsViewClient {
 		// Assignment 2 setup
 		String assignment2 = getAssignment2();
 		String assingment2_name = "Recursion.java";
-		String assignment2_startDate = "2/3/2019";
-		String assignment2_endDate = "2/23/2019";
+		String assignment2_startDate = "2019/02/03 00:00:00";
+		String assignment2_endDate = "2019/02/24 00:00:00";
 		File assignment2_dest = new File(directoryPath + File.separator + assingment2_name);
 		if (!assignment2_dest.exists() || assignment2_dest.isDirectory()) {
 			try (FileWriter file = new FileWriter(directoryPath + File.separator + assingment2_name)) {
@@ -90,7 +90,7 @@ public class AssignmentQuestionsViewClient {
 		if (!assignment2_metadata.exists() || assignment2_metadata.isDirectory()) {
 			try (FileWriter file = new FileWriter(directoryPath + File.separator + assingment2_name.split("\\.")[0] + "_" + "metadata" + ".txt")) {
 				String str = "AssignmentName--"+assingment2_name.split("\\.")[0]+System.lineSeparator();
-				//str += "CourseName--"+courseName+System.lineSeparator();
+				str += "CourseName--"+userCourseName+System.lineSeparator();
 				str += "StartDate--"+assignment2_startDate+System.lineSeparator();
 				str += "EndDate--"+assignment2_endDate+System.lineSeparator();
 				file.write(str);
@@ -107,7 +107,7 @@ public class AssignmentQuestionsViewClient {
 	private String getAssignment1() {
 		return "public class ConditionalStatement {\r\n" + 
 				"	public static void main(String[] args) {\r\n" + 
-				"        System.out.println(\"Hello, World!\");\r\n" + 
+				"        System.out.println(\"Success!\");\r\n" + 
 				"   }" + 
 				"\r\n" + 
 				"//	Foo Corporation needs a program to calculate how much to pay their hourly employees. The US Department of Labor requires that employees get paid time and a half for any hours over 40 that they work in a single week. For example, if an employee works 45 hours, they get 5 hours of overtime, at 1.5 times their base pay. The State of Massachusetts requires that hourly employees be paid at least $8.00 an hour. Foo Corp requires that an employee not work more than 60 hours in a week.\r\n" + 
@@ -124,7 +124,7 @@ public class AssignmentQuestionsViewClient {
 	private String getAssignment2() {
 		return "public class Recursion {\r\n" + 
 				"	public static void main(String[] args) {\r\n" + 
-				"        System.out.println(\"Hello, World!\");\r\n" + 
+				"        System.out.println(\"Success!\");\r\n" + 
 				"   }" + 
 				"	\r\n" + 
 				"//	For the following problem, you may not use FOR, WHILE, DO, or any other looping construct. \r\n" + 
@@ -143,6 +143,8 @@ public class AssignmentQuestionsViewClient {
 		String directoryPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + 
 				File.separator + "AssignmentList_Cosmo_Client";
 
+		System.out.println("assignmentName = here ");
+		
 		String studentId = InteractiveSplashHandler.login_userName;
 		String courseName = InteractiveSplashHandler.login_courseName;
 		String assignmentName = TutorPluginLogTracker.assignmentName;
@@ -153,7 +155,9 @@ public class AssignmentQuestionsViewClient {
 	    
 	    input.setId(Integer.parseInt(studentId));
 	    
-	    File metaDataFile = new File(directoryPath + File.separator + assignmentName + "_" + courseName + "_" + "metadata" + ".txt");
+	    System.out.println("assignmentName = " + assignmentName);
+	    
+	    File metaDataFile = new File(directoryPath + File.separator + assignmentName + "_" + "metadata" + ".txt");
 		if (metaDataFile.exists() && !metaDataFile.isDirectory()) {
 			List<String> metaData = Files.readAllLines(metaDataFile.toPath());
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -165,7 +169,7 @@ public class AssignmentQuestionsViewClient {
 					(currentDate.equals(endDate) || currentDate.before(endDate))) 
 			{
 				// Local machine URL
-				URL url = new URL("http://localhost:8080/server/inputs/" + input.getId());
+				URL url = new URL("http://localhost:8080/server/inputs/" + studentId);
 				// Manohar AWS URL
 				//URL url = new URL("http://34.224.41.66:8080/assignmentResults");
 				
@@ -174,9 +178,14 @@ public class AssignmentQuestionsViewClient {
 				conn.setRequestMethod("POST");
 				conn.setRequestProperty("Content-Type", "application/json");
 				
-				ObjectOutputStream out = new ObjectOutputStream(conn.getOutputStream());
-				out.writeObject(input);
-				out.close();
+				Gson gson = new Gson();
+			    String inputJson = gson.toJson(input);
+			    
+			    OutputStream os = conn.getOutputStream();
+				os.write(inputJson.getBytes());
+				os.flush();
+				
+				System.out.println("here");
 
 				if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
 					throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());
@@ -185,7 +194,7 @@ public class AssignmentQuestionsViewClient {
 			}
 		}
 		else {
-			System.out.println("File "+ assignmentName + "_" + courseName + "_" + "metadata" + ".txt" +" does not Exists.");
+			System.out.println("File "+ assignmentName + "_" + "metadata" + ".txt" +" does not Exists.");
 			System.out.println("Cannot send info to server.");
 		}
 	}
@@ -319,7 +328,7 @@ public class AssignmentQuestionsViewClient {
 		
 		// For local test
 	    studentId = "1111111111";
-	    courseName = "CSE360";
+	    courseName = "CSE240";
 		
 		File metaDataFile = new File(directoryPath + File.separator + assignmentName + "_" + courseName + "_" + "metadata" + ".txt");
 		if (metaDataFile.exists() && !metaDataFile.isDirectory()) {

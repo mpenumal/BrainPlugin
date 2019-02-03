@@ -35,6 +35,7 @@ import org.eclipse.ui.PlatformUI;
 import org.json.JSONException;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
+import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsViewClient;
 
 /**
@@ -57,8 +58,11 @@ public class TutorPluginRunListener implements IExecutionListener {
 	 }
 	 @Override
 	 public void postExecuteSuccess(String commandId, Object returnValue) {
+		 System.out.println("out postExecuteSuccess");
 		 if (commandId.equals("org.eclipse.jdt.debug.ui.localJavaShortcut.run") ||
 				 commandId.equals("org.eclipse.debug.ui.commands.RunLast")) {
+			 System.out.println("in if postExecuteSuccess");
+			 
 	         IWorkbench workbench = PlatformUI.getWorkbench();
 	         if (workbench == null) return;
 	         IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
@@ -78,7 +82,10 @@ public class TutorPluginRunListener implements IExecutionListener {
 	    		 IProject project = getCurrentSelectedProject();
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
 	    		 AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-	    		 svc.sendLogClient(lines);
+//	    		 svc.sendLogClient(lines);
+	    		 Input input = new Input();
+	    		 input.setNumberRunAttempts(2);
+	    		 svc.sendInput(input);
 	    		 getCompilationErrorsFromProblemsView();
 	    		 
 	    	 } catch (IOException e) {
@@ -91,6 +98,9 @@ public class TutorPluginRunListener implements IExecutionListener {
         }
 		else if (commandId.equals("org.eclipse.jdt.debug.ui.localJavaShortcut.debug") ||
 				 commandId.equals("org.eclipse.debug.ui.commands.DebugLast")) {
+			
+			System.out.println("in elseif postExecuteSuccess");
+			
 			 IWorkbench workbench = PlatformUI.getWorkbench();
 	         if (workbench == null) return;
 	         IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
@@ -109,7 +119,10 @@ public class TutorPluginRunListener implements IExecutionListener {
 	    		 IProject project = getCurrentSelectedProject();
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
 	    		 AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-	    		 svc.sendLogClient(lines);
+//	    		 svc.sendLogClient(lines);
+	    		 Input input = new Input();
+	    		 input.setNumberRunAttempts(2);
+	    		 svc.sendInput(input);
 	    		 getCompilationErrorsFromProblemsView();
 	    		 
 	    	 } catch (IOException e) {
@@ -180,7 +193,10 @@ public class TutorPluginRunListener implements IExecutionListener {
 			if (lines != null && lines.size() > 0 && lines.get(0) == "") {
 				AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
 				try {
-					svc.sendLogClient(lines);
+//					svc.sendLogClient(lines);
+					Input input = new Input();
+		    		 input.setNumberRunAttempts(2);
+		    		 svc.sendInput(input);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
