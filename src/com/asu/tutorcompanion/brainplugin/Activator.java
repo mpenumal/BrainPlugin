@@ -22,8 +22,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
-import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.custom.InputModel;
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -98,7 +98,7 @@ public class Activator extends AbstractUIPlugin implements IStartup {
            	         	Client client = new Client();
            	         	try {
 //							svc.sendLogClient(lines);
-           	         		Input input2 = new Input();
+           	         		InputModel input2 = new InputModel();
            	         		input2.setNumberRunAttempts(2);
            	         		client.sendInput(input2);
 						} catch (IOException e) {
@@ -138,7 +138,7 @@ public class Activator extends AbstractUIPlugin implements IStartup {
 	        	Client client = new Client();
 		        try {
 //		        	svc.sendLogClient(lines);
-   	         		Input input2 = new Input();
+   	         		InputModel input2 = new InputModel();
    	         		input2.setNumberRunAttempts(2);
    	         		client.sendInput(input2);
 				} catch (IOException e) {

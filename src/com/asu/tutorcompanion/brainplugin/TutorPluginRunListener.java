@@ -35,8 +35,8 @@ import org.eclipse.ui.PlatformUI;
 import org.json.JSONException;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
-import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.custom.InputModel;
 import com.asu.tutorcompanion.brainplugin.custom.ManageProject;
 
 /**
@@ -84,7 +84,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 	    		 
 	    		 Client client = new Client();
 //				    svc.sendLogClient(lines);
-	            	Input input = new Input();
+	            	InputModel input = new InputModel();
 		    		 input.setNumberRunAttempts(2);
 		    		 client.sendInput(input);
 	    		 
@@ -120,7 +120,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
 	    		 Client client = new Client();
 //				    svc.sendLogClient(lines);
-	            	Input input = new Input();
+	            	InputModel input = new InputModel();
 		    		 input.setNumberRunAttempts(2);
 		    		 client.sendInput(input);
 		    		 
@@ -196,7 +196,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 			if (lines != null && lines.size() > 0 && lines.get(0) == "") {
 				Client client = new Client();
 //			    svc.sendLogClient(lines);
-            	Input input = new Input();
+            	InputModel input = new InputModel();
 	    		 input.setNumberRunAttempts(2);
 	    		 client.sendInput(input);
 			}

@@ -13,7 +13,6 @@ import java.util.Date;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
-import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.splashHandlers.InteractiveSplashHandler;
 import com.google.gson.Gson;
 
@@ -53,7 +52,7 @@ public class Client {
 	 * @throws IOException 
 	 * @throws ParseException 
 	 */
-	public void sendInput(Input input) throws IOException, ParseException {
+	public void sendInput(InputModel input) throws IOException, ParseException {
 		String assignment = Constants.ASSIGNMENT;
 		String assignmentName = Constants.ASSIGNMENT_NAME;
 		String fileType = Constants.FILE_TYPE;

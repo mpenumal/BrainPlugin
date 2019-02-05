@@ -1,10 +1,10 @@
-package com.asu.tutorcompanion.brainplugin.model;
+package com.asu.tutorcompanion.brainplugin.custom;
 
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 
-public class Input implements Serializable {
+public class InputModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int id;

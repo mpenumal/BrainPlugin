@@ -25,8 +25,8 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
-import com.asu.tutorcompanion.brainplugin.model.Input;
 import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.custom.InputModel;
 
 /**
  * 
@@ -67,7 +67,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
 		            	
 					    Client client = new Client();
 //					    svc.sendLogClient(lines);
-		            	Input input = new Input();
+		            	InputModel input = new InputModel();
 			    		 input.setNumberRunAttempts(2);
 			    		 client.sendInput(input);
 					} catch (IOException e) {
@@ -120,7 +120,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
 	            	
 	            	Client client = new Client();
 //				    svc.sendLogClient(lines);
-	            	Input input = new Input();
+	            	InputModel input = new InputModel();
 		    		 input.setNumberRunAttempts(2);
 		    		 client.sendInput(input);
 				} catch (IOException e) {
@@ -190,7 +190,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
             	    			    
             	                	Client client = new Client();
 //            					    svc.sendLogClient(lines);
-            		            	Input input2 = new Input();
+            		            	InputModel input2 = new InputModel();
             			    		 input2.setNumberRunAttempts(2);
             			    		 client.sendInput(input2);
             	    				
@@ -242,7 +242,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
                 	
                 	Client client = new Client();
 //				    svc.sendLogClient(lines);
-	            	Input input3 = new Input();
+	            	InputModel input3 = new InputModel();
 		    		 input3.setNumberRunAttempts(2);
 		    		 client.sendInput(input3);
     				
