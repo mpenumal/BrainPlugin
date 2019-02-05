@@ -36,7 +36,8 @@ import org.json.JSONException;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
 import com.asu.tutorcompanion.brainplugin.model.Input;
-import com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsViewClient;
+import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.custom.ManageProject;
 
 /**
  * 
@@ -58,10 +59,9 @@ public class TutorPluginRunListener implements IExecutionListener {
 	 }
 	 @Override
 	 public void postExecuteSuccess(String commandId, Object returnValue) {
-		 System.out.println("out postExecuteSuccess");
+		 ManageProject manageproject = new ManageProject();
 		 if (commandId.equals("org.eclipse.jdt.debug.ui.localJavaShortcut.run") ||
 				 commandId.equals("org.eclipse.debug.ui.commands.RunLast")) {
-			 System.out.println("in if postExecuteSuccess");
 			 
 	         IWorkbench workbench = PlatformUI.getWorkbench();
 	         if (workbench == null) return;
@@ -79,14 +79,16 @@ public class TutorPluginRunListener implements IExecutionListener {
 	    	 try {
 	    		 int loc = getTotalLinesOfCode();
 	    		 List<String> lines = Arrays.asList("", "", "Run_Action", "LOC|"+loc, "DateTime|"+dateFormat.format(date), "", "");
-	    		 IProject project = getCurrentSelectedProject();
+	    		 IProject project = manageproject.getCurrentSelectedProject();
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
-	    		 AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-//	    		 svc.sendLogClient(lines);
-	    		 Input input = new Input();
-	    		 input.setNumberRunAttempts(2);
-	    		 svc.sendInput(input);
-	    		 getCompilationErrorsFromProblemsView();
+	    		 
+	    		 Client client = new Client();
+//				    svc.sendLogClient(lines);
+	            	Input input = new Input();
+		    		 input.setNumberRunAttempts(2);
+		    		 client.sendInput(input);
+	    		 
+		    	getCompilationErrorsFromProblemsView();
 	    		 
 	    	 } catch (IOException e) {
 	    		 // TODO Auto-generated catch block
@@ -98,8 +100,6 @@ public class TutorPluginRunListener implements IExecutionListener {
         }
 		else if (commandId.equals("org.eclipse.jdt.debug.ui.localJavaShortcut.debug") ||
 				 commandId.equals("org.eclipse.debug.ui.commands.DebugLast")) {
-			
-			System.out.println("in elseif postExecuteSuccess");
 			
 			 IWorkbench workbench = PlatformUI.getWorkbench();
 	         if (workbench == null) return;
@@ -116,13 +116,14 @@ public class TutorPluginRunListener implements IExecutionListener {
 	         // log file Debug operation
 	    	 try {
 	    		 List<String> lines = Arrays.asList("", "", "Debug_Action", "DateTime|"+dateFormat.format(date), "", "");
-	    		 IProject project = getCurrentSelectedProject();
+	    		 IProject project = manageproject.getCurrentSelectedProject();
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
-	    		 AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-//	    		 svc.sendLogClient(lines);
-	    		 Input input = new Input();
-	    		 input.setNumberRunAttempts(2);
-	    		 svc.sendInput(input);
+	    		 Client client = new Client();
+//				    svc.sendLogClient(lines);
+	            	Input input = new Input();
+		    		 input.setNumberRunAttempts(2);
+		    		 client.sendInput(input);
+		    		 
 	    		 getCompilationErrorsFromProblemsView();
 	    		 
 	    	 } catch (IOException e) {
@@ -141,7 +142,8 @@ public class TutorPluginRunListener implements IExecutionListener {
 	 * @throws IOException 
 	  */
 	 private int getTotalLinesOfCode() throws CoreException, IOException {
-		 IProject project = getCurrentSelectedProject();
+		 ManageProject manageproject = new ManageProject();
+		 IProject project = manageproject.getCurrentSelectedProject();
 		 return processContainer(project);
 	 }
 	 
@@ -172,8 +174,9 @@ public class TutorPluginRunListener implements IExecutionListener {
 	 * @throws CoreException
 	 * @throws ParseException 
 	 * @throws JSONException 
+	 * @throws IOException 
 	 */
-	private void getCompilationErrorsFromProblemsView() throws CoreException, ParseException, JSONException {
+	private void getCompilationErrorsFromProblemsView() throws CoreException, ParseException, JSONException, IOException {
 		IMarker[] markers = ResourcesPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		if (markers != null && markers.length > 0) {
 			List<String> lines = new ArrayList<String>(); // s.asList(new String[10*markers.length]);
@@ -191,44 +194,13 @@ public class TutorPluginRunListener implements IExecutionListener {
 			}
 			
 			if (lines != null && lines.size() > 0 && lines.get(0) == "") {
-				AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
-				try {
-//					svc.sendLogClient(lines);
-					Input input = new Input();
-		    		 input.setNumberRunAttempts(2);
-		    		 svc.sendInput(input);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Client client = new Client();
+//			    svc.sendLogClient(lines);
+            	Input input = new Input();
+	    		 input.setNumberRunAttempts(2);
+	    		 client.sendInput(input);
 			}
 		}
-	}
-	 
-	 /**
-	  * Get the current project from the selectionService
-	  * @return projectName
-	  */
-	private static IProject getCurrentSelectedProject() {
-		IProject project = null;
-		 ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
-		 ISelection selection = selectionService.getSelection();
-		 
-		 if(selection instanceof IStructuredSelection) {
-			 Object element = ((IStructuredSelection)selection).getFirstElement();
-			 
-			 if (element instanceof IResource) {
-				 project= ((IResource)element).getProject();
-			 } 
-			 else if (element instanceof IPackageFragmentRoot) {
-				 IJavaProject jProject = ((IPackageFragmentRoot)element).getJavaProject();
-				 project = jProject.getProject();
-		     } else if (element instanceof IJavaElement) {
-		    	 IJavaProject jProject= ((IJavaElement)element).getJavaProject();
-		    	 project = jProject.getProject();
-		     }
-		 }
-		return project;
 	}
 	 
 	 @Override

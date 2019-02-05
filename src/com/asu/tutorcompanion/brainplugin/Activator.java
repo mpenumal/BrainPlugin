@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
 
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
 import com.asu.tutorcompanion.brainplugin.model.Input;
-import com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsViewClient;
+import com.asu.tutorcompanion.brainplugin.custom.Client;
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -95,12 +95,12 @@ public class Activator extends AbstractUIPlugin implements IStartup {
            	         	
            	         	TutorPluginLogTracker.assignmentName = assignmentName;
            	         	
-           	         	AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
+           	         	Client client = new Client();
            	         	try {
 //							svc.sendLogClient(lines);
            	         		Input input2 = new Input();
            	         		input2.setNumberRunAttempts(2);
-           	         		svc.sendInput(input2);
+           	         		client.sendInput(input2);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -135,9 +135,12 @@ public class Activator extends AbstractUIPlugin implements IStartup {
 	        	
 	        	TutorPluginLogTracker.assignmentName = assignmentName;
 	        	
-	        	AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
+	        	Client client = new Client();
 		        try {
-					svc.sendLogClient(lines);
+//		        	svc.sendLogClient(lines);
+   	         		Input input2 = new Input();
+   	         		input2.setNumberRunAttempts(2);
+   	         		client.sendInput(input2);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

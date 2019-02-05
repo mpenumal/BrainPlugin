@@ -3,6 +3,9 @@ package com.asu.tutorcompanion.brainplugin.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 
+import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.custom.ManageProject;
+
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 
@@ -165,9 +168,9 @@ public class AssignmentQuestionsView extends ViewPart {
 		refreshAction = new Action() {
 			public void run() {
 				if (viewer != null) {
-					AssignmentQuestionsViewClient svc = new AssignmentQuestionsViewClient();
+					Client client = new Client();
 					try {
-						svc.getAssignmentsFromPlugin();
+						client.getAssignmentFromPlugin();
 //						svc.getAssignmentsClient();
 						//System.out.println("Workspace: "+ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
 					} catch (Exception e) {
@@ -236,7 +239,8 @@ public class AssignmentQuestionsView extends ViewPart {
 							String className = fileName;
 							fileName = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + File.separator + "AssignmentList_Cosmo_Client" + File.separator + fileName;
 							String packageName = "assignmentPackage";
-							createJavaProject(projectName, fileName, packageName, className);
+							ManageProject manageProject = new ManageProject();
+							manageProject.createJavaProject(projectName, fileName, packageName, className);
 						} catch (CoreException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -266,86 +270,6 @@ public class AssignmentQuestionsView extends ViewPart {
 				}
 			}		
 		};
-	}
-
-	/**
-	 * @return
-	 * @throws CoreException 
-	 * @throws IOException 
-	 */
-	private void createJavaProject(String projectName, String fileName, String packageName, String className) throws CoreException, IOException {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(projectName);
-		if (!project.exists() ) {
-			project.create(null);
-			project.open(null);
-			
-			IProjectDescription description = project.getDescription();
-			description.setNatureIds(new String[] { JavaCore.NATURE_ID });
-			project.setDescription(description, null);
-			
-			IJavaProject javaProject = JavaCore.create(project);
-			
-			IFolder binFolder = project.getFolder("bin");
-			binFolder.create(false, true, null);
-			javaProject.setOutputLocation(binFolder.getFullPath(), null);
-			
-			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-			IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-			LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
-			for (LibraryLocation element : locations) {
-			 entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
-			}
-			//add libs to project class path
-			javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
-			
-			IFolder sourceFolder = project.getFolder("src");
-			sourceFolder.create(false, true, null);
-			
-			IPackageFragmentRoot fragmentRoot = javaProject.getPackageFragmentRoot(sourceFolder);
-			IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-			IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-			System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-			newEntries[oldEntries.length] = JavaCore.newSourceEntry(fragmentRoot.getPath());
-			javaProject.setRawClasspath(newEntries, null);
-			
-			IPackageFragment pack = javaProject.getPackageFragmentRoot(sourceFolder).createPackageFragment(packageName, false, null);
-			
-			String source;
-			source = readFile(fileName);
-			
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("package " + pack.getElementName() + ";\n");
-			buffer.append("\n");
-			buffer.append(source);
-			
-			@SuppressWarnings("unused")
-			ICompilationUnit cu = pack.createCompilationUnit(className , buffer.toString(), false, null);
-		}
-		else {
-			if (!project.isOpen()) {
-				project.open(null);
-			}
-		}
-	}
-	
-	String readFile(String fileName) throws IOException {
-		String file = FileSystems.getDefault().getPath(fileName).normalize().toAbsolutePath().toString();
-	    BufferedReader br = new BufferedReader(new FileReader(file));
-	    
-	    try {
-	        StringBuilder sb = new StringBuilder();
-	        String line = br.readLine();
-
-	        while (line != null) {
-	            sb.append(line);
-	            sb.append("\n");
-	            line = br.readLine();
-	        }
-	        return sb.toString();
-	    } finally {
-	        br.close();
-	    }
 	}
 	
 	private void hookDoubleClickAction() {
