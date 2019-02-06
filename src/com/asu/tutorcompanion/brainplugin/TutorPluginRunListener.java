@@ -37,7 +37,6 @@ import org.json.JSONException;
 import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
 import com.asu.tutorcompanion.brainplugin.custom.Client;
 import com.asu.tutorcompanion.brainplugin.custom.InputModel;
-import com.asu.tutorcompanion.brainplugin.custom.ManageProject;
 
 /**
  * 
@@ -59,7 +58,6 @@ public class TutorPluginRunListener implements IExecutionListener {
 	 }
 	 @Override
 	 public void postExecuteSuccess(String commandId, Object returnValue) {
-		 ManageProject manageproject = new ManageProject();
 		 if (commandId.equals("org.eclipse.jdt.debug.ui.localJavaShortcut.run") ||
 				 commandId.equals("org.eclipse.debug.ui.commands.RunLast")) {
 			 
@@ -77,9 +75,9 @@ public class TutorPluginRunListener implements IExecutionListener {
 	         
 	         // log file run operation
 	    	 try {
-	    		 int loc = getTotalLinesOfCode();
+	    		 IProject project = getCurrentSelectedProject();
+	    		 int loc = getTotalLinesOfCode(project);
 	    		 List<String> lines = Arrays.asList("", "", "Run_Action", "LOC|"+loc, "DateTime|"+dateFormat.format(date), "", "");
-	    		 IProject project = manageproject.getCurrentSelectedProject();
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
 	    		 
 	    		 Client client = new Client();
@@ -116,7 +114,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 	         // log file Debug operation
 	    	 try {
 	    		 List<String> lines = Arrays.asList("", "", "Debug_Action", "DateTime|"+dateFormat.format(date), "", "");
-	    		 IProject project = manageproject.getCurrentSelectedProject();
+	    		 IProject project = getCurrentSelectedProject();
 	    		 TutorPluginLogTracker.assignmentName = project.getName();
 	    		 Client client = new Client();
 //				    svc.sendLogClient(lines);
@@ -137,23 +135,37 @@ public class TutorPluginRunListener implements IExecutionListener {
 	 }
 	 
 	 /**
-	  * Get the total lines of java code in the project
-	 * @throws CoreException 
-	 * @throws IOException 
+	  * Get the current project from the selectionService
+	  * @return projectName
 	  */
-	 private int getTotalLinesOfCode() throws CoreException, IOException {
-		 ManageProject manageproject = new ManageProject();
-		 IProject project = manageproject.getCurrentSelectedProject();
-		 return processContainer(project);
-	 }
+	private IProject getCurrentSelectedProject() {
+		IProject project = null;
+		 ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
+		 ISelection selection = selectionService.getSelection();
+		 
+		 if(selection instanceof IStructuredSelection) {
+			 Object element = ((IStructuredSelection)selection).getFirstElement();
+			 
+			 if (element instanceof IResource) {
+				 project= ((IResource)element).getProject();
+			 } 
+			 else if (element instanceof IPackageFragmentRoot) {
+				 IJavaProject jProject = ((IPackageFragmentRoot)element).getJavaProject();
+				 project = jProject.getProject();
+		     } else if (element instanceof IJavaElement) {
+		    	 IJavaProject jProject= ((IJavaElement)element).getJavaProject();
+		    	 project = jProject.getProject();
+		     }
+		 }
+		return project;
+	}
 	 
-	 
-	 private int processContainer(IContainer container) throws CoreException, IOException {
+	 private int getTotalLinesOfCode(IContainer container) throws CoreException, IOException {
 		 int loc = 0;
 		 IResource [] members = container.members();
 		 for (IResource member : members) {
 			 if (member instanceof IContainer) {
-				 loc += processContainer((IContainer)member);
+				 loc += getTotalLinesOfCode((IContainer)member);
 			 }
 			 else if (member instanceof IFile) {
 				 if (member.getFullPath().toString().endsWith(".java")) {
@@ -168,7 +180,6 @@ public class TutorPluginRunListener implements IExecutionListener {
 		 return loc;
 	 }
 	 
-	
 	/**
 	 * Get the compilation errors from the Problems View
 	 * @throws CoreException
