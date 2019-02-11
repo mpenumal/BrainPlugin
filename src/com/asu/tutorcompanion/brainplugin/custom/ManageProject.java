@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,24 +111,45 @@ public class ManageProject {
 		newCopy.delete();
 		FileUtils.copyFile(studentCodeFile, newCopy);
 	}
-	
+
 	/**
 	 * Get the current code file, which is the assignment java file that student is working on
+	 * extract student's answer function from the file
 	 * @param projectName
 	 * @return
 	 * @throws CoreException
+	 * @throws IOException 
 	 */
-	public File getCurrentCodeFile(String projectName) throws CoreException {		
-		File studentCodeFile = null;
+	public List<String> getStudentMethodFromFile(String projectName) throws CoreException, IOException {
+		List<String> method = new ArrayList<String>();
+		List<String> allCode = new ArrayList<String>();
+		
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(projectName);
 		if (project.exists() ) {
 			IResource [] members = project.members();
 			if (members[0] instanceof IFile && members[0].getFullPath().toString().endsWith(".java")) {
-				studentCodeFile = new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()+members[0].getFullPath().toString());
+				allCode = Files.readAllLines(Paths.get(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()+members[0].getFullPath().toString()), StandardCharsets.UTF_8);
 			}
 		}
-		return studentCodeFile;
+		
+		if (allCode != null && !allCode.isEmpty()) {
+			int startIndex = 0, endIndex = 0;
+			for (int i = 0; i < allCode.size(); i++) {
+				if (allCode.get(i).contains("Complete this function")) {
+					startIndex = i;
+				}
+				if (startIndex > 0 && endIndex == 0) {
+					method.add(allCode.get(i));
+				}
+				if (allCode.get(i).contains("End of function")) {
+					endIndex = i;
+					break;
+				}
+			}
+		}
+		
+		return method;
 	}
 	
 	private String readFile(String fileName) throws IOException {
