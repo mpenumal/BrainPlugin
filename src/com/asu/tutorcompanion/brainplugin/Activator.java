@@ -28,9 +28,8 @@ import com.asu.tutorcompanion.brainplugin.custom.InputModel;
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin implements IStartup {
-
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.example.TutorHelpPlugin"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "com.asu.tutorcompanion.brainplugin";
 	private static IExecutionListener executionListener;
 	private static TutorPluginEditorListener editorListener;
 	

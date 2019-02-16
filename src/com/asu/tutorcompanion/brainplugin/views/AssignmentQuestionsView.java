@@ -55,7 +55,7 @@ public class AssignmentQuestionsView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "com.asu.tutorcompanion.brainplugin.views.SampleView";
+	public static final String ID = "com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsView";
 	private static String emptyListLabel = "List is Empty.";
 	private TableViewer viewer;
 	private Action refreshAction;
