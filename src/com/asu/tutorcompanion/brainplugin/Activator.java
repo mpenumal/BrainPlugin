@@ -99,11 +99,8 @@ public class Activator extends AbstractUIPlugin implements IStartup {
 //							svc.sendLogClient(lines);
            	         		InputModel input2 = new InputModel();
            	         		input2.setNumberRunAttempts(2);
-           	         		client.sendInput(input2);
+           	         		client.saveInput(input2);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -139,11 +136,8 @@ public class Activator extends AbstractUIPlugin implements IStartup {
 //		        	svc.sendLogClient(lines);
    	         		InputModel input2 = new InputModel();
    	         		input2.setNumberRunAttempts(2);
-   	         		client.sendInput(input2);
+   	         		client.saveInput(input2);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

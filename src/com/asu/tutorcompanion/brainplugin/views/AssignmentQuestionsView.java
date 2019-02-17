@@ -75,7 +75,7 @@ public class AssignmentQuestionsView extends ViewPart {
 		}
 	}
 
-/**
+	/**
 	 * The constructor.
 	 */
 	public AssignmentQuestionsView() {
@@ -101,7 +101,7 @@ public class AssignmentQuestionsView extends ViewPart {
 		viewer.setLabelProvider(new ViewLabelProvider());
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "com.asu.tutorcompanion.brainplugin.viewer");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "com.asu.tutorcompanion.brainplugin.assignmentViewer");
 		getSite().setSelectionProvider(viewer);
 		makeActions();
 		hookContextMenu();

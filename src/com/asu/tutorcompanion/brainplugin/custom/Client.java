@@ -1,14 +1,10 @@
 package com.asu.tutorcompanion.brainplugin.custom;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -20,10 +16,8 @@ public class Client {
 	/**
 	 * Get Assignments using API 
 	 * @throws IOException
-	 * @throws ParseException 
-	 * @throws JSONException 
 	 */
-	public void getAssignmentAPI() throws IOException, ParseException {
+	public void getAssignmentAPI() throws IOException {
 		String downloadFolder = Constants.DOWNLOAD_FOLDER_NAME;
 		String directoryPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + 
 				File.separator + downloadFolder;
@@ -31,7 +25,7 @@ public class Client {
 		// Local machine URL
 		URL url = new URL("http://localhost:8080/server/assignments");
 		// Manohar AWS URL
-//		URL url = new URL("http://34.224.41.66:8080/assignments");
+		// URL url = new URL("http://34.224.41.66:8080/assignments");
 
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
@@ -55,12 +49,12 @@ public class Client {
 		conn.disconnect();
 	}
 	
-	/** 
-	 * Send captured events to API
-	 * @throws IOException 
-	 * @throws ParseException 
+	/**
+	 * Save new events to API
+	 * @param input
+	 * @throws IOException
 	 */
-	public void sendInput(InputModel input) throws IOException, ParseException {
+	public String saveInput(InputModel input) throws IOException {
 		
 		String studentId = Constants.DEFAULT_STUDENT_ID;
 		
@@ -76,6 +70,43 @@ public class Client {
 	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
+	 	conn.setRequestProperty("Content-Type", "application/json");
+	 			
+	 	Gson gson = new Gson();
+	 	String inputJson = gson.toJson(input);
+	 		    
+	 	OutputStream os = conn.getOutputStream();
+	 	os.write(inputJson.getBytes());
+	 	os.flush();
+
+	 	if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+	 		throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());
+	 	}
+	 	conn.disconnect();
+	 	String id = (String) conn.getContent();
+	 	return id;
+	}
+	
+	/**
+	 * Update existing events with Brain message, code and Feedback
+	 * @param input
+	 * @throws IOException 
+	 */
+	public void updateInput(InputModel input) throws IOException {
+		String studentId = Constants.DEFAULT_STUDENT_ID;
+		
+		// Comment when using locally
+		studentId = InteractiveSplashHandler.login_userName;
+	    input.setId(Integer.parseInt(studentId));
+	    
+	    // Local machine URL
+	    URL url = new URL("http://localhost:8080/server/inputs/{id}");
+	    // AWS URL
+	    //URL url = new URL("http://34.224.41.66:8080/server/inputs/");
+	 			
+	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	    conn.setDoOutput(true);
+	    conn.setRequestMethod("PUT");
 	 	conn.setRequestProperty("Content-Type", "application/json");
 	 			
 	 	Gson gson = new Gson();

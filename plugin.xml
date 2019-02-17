@@ -20,27 +20,38 @@
       </category>
       <view
             name="Assignment Questions View"
-            icon="icons/yy.png"
+            icon="icons/pitchfork.png"
             category="com.asu.tutorcompanion.brainplugin"
             class="com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsView"
             id="com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsView">
       </view>
+      <view
+            name="Help View"
+            icon="icons/sparky.png"
+            category="com.asu.tutorcompanion.brainplugin"
+            class="com.asu.tutorcompanion.brainplugin.views.HelpView"
+            id="com.asu.tutorcompanion.brainplugin.views.HelpView">
+      </view>
    </extension>
    
    <extension point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
          <view
                ratio="0.5"
                relative="org.eclipse.ui.views.ProblemView"
                relationship="stack"
                id="com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsView">
          </view>
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="stack"
+               id="com.asu.tutorcompanion.brainplugin.views.HelpView">
+         </view>
       </perspectiveExtension>
    </extension>
    
-   <extension
-         point="org.eclipse.ui.splashHandlers">
+   <extension point="org.eclipse.ui.splashHandlers">
       <splashHandler
             class="com.asu.tutorcompanion.brainplugin.splashHandlers.InteractiveSplashHandler"
             id="com.asu.tutorcompanion.brainplugin.splashHandlers.interactive">

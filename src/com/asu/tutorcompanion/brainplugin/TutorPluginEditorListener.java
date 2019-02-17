@@ -69,7 +69,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
 //					    svc.sendLogClient(lines);
 		            	InputModel input = new InputModel();
 			    		 input.setNumberRunAttempts(2);
-			    		 client.sendInput(input);
+			    		 client.saveInput(input);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -122,7 +122,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
 //				    svc.sendLogClient(lines);
 	            	InputModel input = new InputModel();
 		    		 input.setNumberRunAttempts(2);
-		    		 client.sendInput(input);
+		    		 client.saveInput(input);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -192,7 +192,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
 //            					    svc.sendLogClient(lines);
             		            	InputModel input2 = new InputModel();
             			    		 input2.setNumberRunAttempts(2);
-            			    		 client.sendInput(input2);
+            			    		 client.saveInput(input2);
             	    				
             	    			} catch (IOException e) {
             	    				// TODO Auto-generated catch block
@@ -244,7 +244,7 @@ public class TutorPluginEditorListener implements IPartListener2 {
 //				    svc.sendLogClient(lines);
 	            	InputModel input3 = new InputModel();
 		    		 input3.setNumberRunAttempts(2);
-		    		 client.sendInput(input3);
+		    		 client.saveInput(input3);
     				
     			} catch (IOException e) {
     				// TODO Auto-generated catch block

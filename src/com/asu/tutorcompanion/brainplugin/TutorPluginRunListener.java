@@ -84,7 +84,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 //				    svc.sendLogClient(lines);
 	            	InputModel input = new InputModel();
 		    		 input.setNumberRunAttempts(2);
-		    		 client.sendInput(input);
+		    		 client.saveInput(input);
 	    		 
 		    	getCompilationErrorsFromProblemsView();
 	    		 
@@ -120,7 +120,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 //				    svc.sendLogClient(lines);
 	            	InputModel input = new InputModel();
 		    		 input.setNumberRunAttempts(2);
-		    		 client.sendInput(input);
+		    		 client.saveInput(input);
 		    		 
 	    		 getCompilationErrorsFromProblemsView();
 	    		 
@@ -209,7 +209,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 //			    svc.sendLogClient(lines);
             	InputModel input = new InputModel();
 	    		 input.setNumberRunAttempts(2);
-	    		 client.sendInput(input);
+	    		 client.saveInput(input);
 			}
 		}
 	}
