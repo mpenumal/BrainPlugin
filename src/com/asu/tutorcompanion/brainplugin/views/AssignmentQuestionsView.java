@@ -170,8 +170,7 @@ public class AssignmentQuestionsView extends ViewPart {
 				if (viewer != null) {
 					Client client = new Client();
 					try {
-						client.getAssignmentFromPlugin();
-//						svc.getAssignmentsClient();
+						client.getAssignmentAPI();
 						//System.out.println("Workspace: "+ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

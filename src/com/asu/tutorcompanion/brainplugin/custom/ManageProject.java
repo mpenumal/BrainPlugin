@@ -102,11 +102,10 @@ public class ManageProject {
 	 */
 	public void saveCurrentCodeFile(File studentCodeFile) throws CoreException, IOException {
 		String downloadFolder = Constants.DOWNLOAD_FOLDER_NAME;
-		String fileType = Constants.FILE_TYPE;
 		String directoryPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + 
 				File.separator + downloadFolder;
 
-		File newCopy = new File(directoryPath + File.separator + "new" + fileType);
+		File newCopy = new File(directoryPath + File.separator + "new_" + studentCodeFile.getName());
 		// delete if exists
 		newCopy.delete();
 		FileUtils.copyFile(studentCodeFile, newCopy);
