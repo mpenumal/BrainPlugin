@@ -1,27 +1,123 @@
 package com.asu.tutorcompanion.brainplugin.custom;
 
-import org.eclipse.jface.text.IRegion;
+import java.io.IOException;
+import java.util.List;
 
-// TODO:
+import org.eclipse.core.runtime.CoreException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+
+import thesis_neuroph.thesis_neuroph.TutorBrain;
+
 public class ManageListeners {
-	// on other Actions: GetFile -> CreateInputModel (using already saved copy) -> SendInput
-	
-	public void logTracker_LineAppended(IRegion region) {
-	}
-	
-	// no logging required.
-	// Use it to set timers.
-	public void activator_EarlyStartup() {
-	}
-	
-	// no logging required.
-	// Use it to set timers.
-	public void activator_stop() {
-	}
-	
-	// on RUN: GetFile -> CreateInputModel (using already saved copy) -> SaveFile -> SendInput
-	// This event listener deals with ERRORS, RUN and DEBUG
-	public void runListener_PostExecuteSuccess() {
+
+	public InputModel runRequest() throws CoreException, IOException, JSONException {
+		ManageProject manageProject = new ManageProject();
+		List<String> methodCode = manageProject.getStudentMethodFromFile();
+		ColumnEvaluation columnEvaluation = new ColumnEvaluation();
+		InputModel input = columnEvaluation.generateInputFromMethod(methodCode);
+		input.setAction(Constants.RUN_ACTION);
 		
+		Client client = new Client();
+		Long inputId = client.saveInput(input);
+		input.setId(inputId);
+		
+		TutorBrain tutorBrain = new TutorBrain();
+		Gson gson = new Gson();
+        String jsonString = gson.toJson(input);
+        JSONObject inputJSON = new JSONObject(jsonString);
+		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		input.setMessageCode(jObj.getInt("messageCode"));
+		input.setMessageGiven(jObj.getString("messageGiven"));
+		
+		return input;
+	}
+	
+	public InputModel debugRequest() throws CoreException, IOException, JSONException {
+		ManageProject manageProject = new ManageProject();
+		List<String> methodCode = manageProject.getStudentMethodFromFile();
+		ColumnEvaluation columnEvaluation = new ColumnEvaluation();
+		InputModel input = columnEvaluation.generateInputFromMethod(methodCode);
+		input.setAction(Constants.DEBUG_ACTION);
+		
+		Client client = new Client();
+		client.saveInput(input);
+		
+		TutorBrain tutorBrain = new TutorBrain();
+		Gson gson = new Gson();
+        String jsonString = gson.toJson(input);
+        JSONObject inputJSON = new JSONObject(jsonString);
+		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		input.setMessageCode(jObj.getInt("messageCode"));
+		input.setMessageGiven(jObj.getString("messageGiven"));
+		
+		return input;
+	}
+	
+	public InputModel errorCaptureRequest(String error) throws IOException, CoreException, JSONException {
+		ManageProject manageProject = new ManageProject();
+		List<String> methodCode = manageProject.getStudentMethodFromFile();
+		ColumnEvaluation columnEvaluation = new ColumnEvaluation();
+		InputModel input = columnEvaluation.generateInputFromMethod(methodCode);
+		input.setAction(Constants.ERROR_ACTION);
+		input.setErrorType(error);
+		
+		Client client = new Client();
+		client.saveInput(input);
+		
+		TutorBrain tutorBrain = new TutorBrain();
+		Gson gson = new Gson();
+        String jsonString = gson.toJson(input);
+        JSONObject inputJSON = new JSONObject(jsonString);
+		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		input.setMessageCode(jObj.getInt("messageCode"));
+		input.setMessageGiven(jObj.getString("messageGiven"));
+		
+		return input;
+	}
+	
+	public InputModel helpRequest() throws CoreException, IOException, JSONException {
+		ManageProject manageProject = new ManageProject();
+		List<String> methodCode = manageProject.getStudentMethodFromFile();
+		ColumnEvaluation columnEvaluation = new ColumnEvaluation();
+		InputModel input = columnEvaluation.generateInputFromMethod(methodCode);
+		input.setAction(Constants.HELP_ACTION);
+		
+		Client client = new Client();
+		client.saveInput(input);
+		
+		TutorBrain tutorBrain = new TutorBrain();
+		Gson gson = new Gson();
+        String jsonString = gson.toJson(input);
+        JSONObject inputJSON = new JSONObject(jsonString);
+		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		input.setMessageCode(jObj.getInt("messageCode"));
+		input.setMessageGiven(jObj.getString("messageGiven"));
+		
+		return input;
+	}
+	
+	public InputModel submitRequest() throws CoreException, IOException, JSONException {
+		ManageProject manageProject = new ManageProject();
+		List<String> methodCode = manageProject.getStudentMethodFromFile();
+		ColumnEvaluation columnEvaluation = new ColumnEvaluation();
+		InputModel input = columnEvaluation.generateInputFromMethod(methodCode);
+		input.setAction(Constants.SUBMIT_ACTION);
+		input.setAssignmentCompletedSuccessfully(1);
+		
+		Client client = new Client();
+		client.saveInput(input);
+		
+		TutorBrain tutorBrain = new TutorBrain();
+		Gson gson = new Gson();
+        String jsonString = gson.toJson(input);
+        JSONObject inputJSON = new JSONObject(jsonString);
+		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		input.setMessageCode(jObj.getInt("messageCode"));
+		input.setMessageGiven(jObj.getString("messageGiven"));
+		
+		return input;
 	}
 }

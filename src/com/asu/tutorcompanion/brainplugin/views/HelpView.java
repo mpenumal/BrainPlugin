@@ -1,13 +1,8 @@
 package com.asu.tutorcompanion.brainplugin.views;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -30,17 +25,13 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
-import com.asu.tutorcompanion.brainplugin.custom.BrainService;
 import com.asu.tutorcompanion.brainplugin.custom.Client;
-import com.asu.tutorcompanion.brainplugin.custom.ManageProject;
 import com.asu.tutorcompanion.brainplugin.custom.Constants;
-import com.asu.tutorcompanion.brainplugin.views.AssignmentQuestionsView.ViewLabelProvider;
+import com.asu.tutorcompanion.brainplugin.custom.InputModel;
+import com.asu.tutorcompanion.brainplugin.custom.ManageListeners;
 
 public class HelpView extends ViewPart {
 	
@@ -48,15 +39,16 @@ public class HelpView extends ViewPart {
 	 * The ID of the view as specified by the extension.
 	 */
 	public static final String ID = "com.asu.tutorcompanion.brainplugin.views.HelpView";
+	public static long inputId = 0;
+	public static int brainCode = 0;
+	public static String brainMessage = "";
 	private static String messageLabel = "This is the help view.";
-	private String brainMessage = "";
-	private int brainCode = 0;	
-	private TableViewer viewer;
+	private static TableViewer viewer;
 	private Action helpAction;
 	private Action doubleClickAction;
 	
 	
-	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+	static class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		public String getColumnText(Object obj, int index) {
 			return getText(obj);
 		}
@@ -117,22 +109,14 @@ public class HelpView extends ViewPart {
 		helpAction = new Action() {
 			public void run() {
 				if (viewer != null) {
-					// clear values before new request
-					brainMessage = "";
-					brainCode = 0;
-					BrainService brainService = new BrainService();
+					clearBrainValues();
 					try {
-						// TODO: brainService.getMessage();
-						brainMessage = "Message from Brain";
-						brainCode = 12;
+						ManageListeners manageListeners = new ManageListeners();
+						InputModel input = manageListeners.helpRequest();
+						setBrainValues(input);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
-					ArrayList<String> arrList = createHelpResponse();
-					viewer.setContentProvider(ArrayContentProvider.getInstance());
-					viewer.setInput(arrList);
-					viewer.setLabelProvider(new ViewLabelProvider());
 				}
 				else {
 					showMessage("Help Action executed");
@@ -149,13 +133,43 @@ public class HelpView extends ViewPart {
 			public void run() {
 				ISelection selection = viewer.getSelection();
 				Object obj = ((IStructuredSelection)selection).getFirstElement();
-				String listItemName = obj.toString(); 
+				String listItemName = obj.toString();
+				
+				@SuppressWarnings("unchecked")
 				ArrayList<String> viewerList = (ArrayList<String>) viewer.getInput();
 				
 				if (viewerList.contains(Constants.FEEDBACK_1)) {
 					if (listItemName.equals(Constants.FEEDBACK_1) || listItemName.equals(Constants.FEEDBACK_2) ||
 							listItemName.equals(Constants.FEEDBACK_3) || listItemName.equals(Constants.FEEDBACK_4)) {
-						// TODO: BrainService save feedback method
+						Client client = new Client();
+						InputModel input = new InputModel();
+						input.setId(inputId);
+						input.setMessageCode(brainCode);
+						input.setMessageGiven(brainMessage);
+						switch(listItemName)
+						{
+							case Constants.FEEDBACK_4:
+								input.setFeedbackSurvey(4);
+								break;
+							case Constants.FEEDBACK_3:
+								input.setFeedbackSurvey(3);
+								break;
+							case Constants.FEEDBACK_2:
+								input.setFeedbackSurvey(2);
+								break;
+							case Constants.FEEDBACK_1:
+								input.setFeedbackSurvey(1);
+								break;
+							default:
+								input.setFeedbackSurvey(0);
+						}
+						
+						try {
+							client.updateInput(input);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						ArrayList<String> arrList = createFeedbackResponse();
 						viewer.setContentProvider(ArrayContentProvider.getInstance());
 						viewer.setInput(arrList);
@@ -173,7 +187,25 @@ public class HelpView extends ViewPart {
 		};
 	}
 	
-	private ArrayList<String> createHelpResponse() {
+	public static void setBrainValues(InputModel input) {
+		inputId = input.getId();
+		brainCode = input.getMessageCode();
+		brainMessage = input.getMessageGiven();
+		
+		ArrayList<String> arrList = createHelpResponse();
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setInput(arrList);
+		viewer.setLabelProvider(new ViewLabelProvider());
+	}
+	
+	private void clearBrainValues() {
+		// clear values before new request
+		inputId = 0;
+		brainCode = 0;
+		brainMessage = "";
+	}
+	
+	private static ArrayList<String> createHelpResponse() {
 		ArrayList<String> arrList = new ArrayList<String>();
 		arrList.add("code = " + brainCode);
 		arrList.add("message = " + brainMessage);

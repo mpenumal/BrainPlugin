@@ -1,7 +1,9 @@
 package com.asu.tutorcompanion.brainplugin.custom;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -54,7 +56,7 @@ public class Client {
 	 * @param input
 	 * @throws IOException
 	 */
-	public String saveInput(InputModel input) throws IOException {
+	public Long saveInput(InputModel input) throws IOException {
 		
 		String studentId = Constants.DEFAULT_STUDENT_ID;
 		
@@ -82,8 +84,17 @@ public class Client {
 	 	if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
 	 		throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());
 	 	}
+
+	 	BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	 	StringBuilder sb = new StringBuilder();
+	 	String output;
+	 	Long id = null;
+	 	while ((output = br.readLine()) != null) {
+	 		id = Long.parseLong(output);
+	 		sb.append(output);
+	 	}
+
 	 	conn.disconnect();
-	 	String id = (String) conn.getContent();
 	 	return id;
 	}
 	
@@ -92,15 +103,9 @@ public class Client {
 	 * @param input
 	 * @throws IOException 
 	 */
-	public void updateInput(InputModel input) throws IOException {
-		String studentId = Constants.DEFAULT_STUDENT_ID;
-		
-		// Comment when using locally
-		studentId = InteractiveSplashHandler.login_userName;
-	    input.setId(Integer.parseInt(studentId));
-	    
+	public void updateInput(InputModel input) throws IOException {	    
 	    // Local machine URL
-	    URL url = new URL("http://localhost:8080/server/inputs/{id}");
+	    URL url = new URL("http://localhost:8080/server/inputs/" + input.getId());
 	    // AWS URL
 	    //URL url = new URL("http://34.224.41.66:8080/server/inputs/");
 	 			

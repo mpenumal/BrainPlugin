@@ -1,6 +1,5 @@
 package com.asu.tutorcompanion.brainplugin.launching;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,14 +7,16 @@ import org.eclipse.debug.ui.console.IConsole;
 import org.eclipse.debug.ui.console.IConsoleLineTracker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.ui.PlatformUI;
 
-import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.custom.Constants;
 import com.asu.tutorcompanion.brainplugin.custom.InputModel;
+import com.asu.tutorcompanion.brainplugin.custom.ManageListeners;
+import com.asu.tutorcompanion.brainplugin.views.HelpView;
 
 public class TutorPluginLogTracker implements IConsoleLineTracker {
 
 	private IConsole m_console;
-	public static String assignmentName;
 	
 	@Override
 	public void dispose() {
@@ -34,18 +35,21 @@ public class TutorPluginLogTracker implements IConsoleLineTracker {
             	String line = m_console.getDocument().get(region.getOffset(), region.getLength());
             	line = line.trim();
             	
-            	InputModel input = new InputModel();
-            	
             	if (!line.equals("")) {
-            		List<String> lines = Collections.singletonList(line.trim()); 
-            		
-            		input.setAssignmentCompletedSuccessfully(lines.get(0).equalsIgnoreCase("Success!") ? 1 : 0);
-                	
-            		Client client = new Client();
-//				    svc.sendLogClient(lines);
-	            	InputModel input2 = new InputModel();
-		    		 input2.setNumberRunAttempts(2);
-		    		 client.saveInput(input2);
+            		List<String> lines = Collections.singletonList(line.trim());
+            		if (lines.get(0).equalsIgnoreCase(Constants.STUDENT_FUNCTION_SUCCESS)) {
+            			// SUBMIT Successfully
+            			ManageListeners manageListeners = new ManageListeners();
+            			InputModel input = manageListeners.submitRequest();
+            			HelpView.setBrainValues(input);
+            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+            		} else if (lines.get(0).startsWith("Exception")) {
+            			ManageListeners manageListeners = new ManageListeners();
+            			// RUNTIME ERRORS call
+            			InputModel input = manageListeners.errorCaptureRequest(lines.get(0));
+            			HelpView.setBrainValues(input);
+            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+            		}
             	}
 				
 			} catch (BadLocationException e) {

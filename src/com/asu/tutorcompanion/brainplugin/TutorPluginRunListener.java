@@ -1,42 +1,24 @@
 package com.asu.tutorcompanion.brainplugin;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IExecutionListener;
 import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.json.JSONException;
 
-import com.asu.tutorcompanion.brainplugin.launching.TutorPluginLogTracker;
-import com.asu.tutorcompanion.brainplugin.custom.Client;
+import com.asu.tutorcompanion.brainplugin.views.HelpView;
 import com.asu.tutorcompanion.brainplugin.custom.InputModel;
+import com.asu.tutorcompanion.brainplugin.custom.ManageListeners;
 
 /**
  * 
@@ -44,8 +26,6 @@ import com.asu.tutorcompanion.brainplugin.custom.InputModel;
  *
  */
 public class TutorPluginRunListener implements IExecutionListener {
-	
-	public static String currentProject = "";
 	
 	 @Override
 	 public void notHandled(String commandId, NotHandledException exception) {
@@ -69,32 +49,25 @@ public class TutorPluginRunListener implements IExecutionListener {
 	         if (window.getPartService().getActivePart() == null) return;
 	         if (window.getPartService().getActivePart().getSite() == null) return;
 	         if (window.getPartService().getActivePart().getSite().getPage() == null) return;
-
-	         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	         Date date = new Date();
 	         
-	         // log file run operation
-	    	 try {
-	    		 IProject project = getCurrentSelectedProject();
-	    		 int loc = getTotalLinesOfCode(project);
-	    		 List<String> lines = Arrays.asList("", "", "Run_Action", "LOC|"+loc, "DateTime|"+dateFormat.format(date), "", "");
-	    		 TutorPluginLogTracker.assignmentName = project.getName();
-	    		 
-	    		 Client client = new Client();
-//				    svc.sendLogClient(lines);
-	            	InputModel input = new InputModel();
-		    		 input.setNumberRunAttempts(2);
-		    		 client.saveInput(input);
-	    		 
-		    	getCompilationErrorsFromProblemsView();
-	    		 
-	    	 } catch (IOException e) {
-	    		 // TODO Auto-generated catch block
-	    		 e.printStackTrace();
-	    	 } catch (Exception e) {
-	    		 // TODO Auto-generated catch block
-	    		 e.printStackTrace();
-	    	 }
+
+	        IWorkbenchPage page = window.getActivePage();
+	        ManageListeners manageListeners = new ManageListeners();
+    		 try {
+    			 InputModel input = manageListeners.runRequest();
+    			 HelpView.setBrainValues(input);
+    			 page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+			} catch (CoreException | IOException | JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				getCompilationErrorsFromProblemsView(page);
+			} catch (CoreException | IOException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
         }
 		else if (commandId.equals("org.eclipse.jdt.debug.ui.localJavaShortcut.debug") ||
 				 commandId.equals("org.eclipse.debug.ui.commands.DebugLast")) {
@@ -107,110 +80,41 @@ public class TutorPluginRunListener implements IExecutionListener {
 	         if (window.getPartService().getActivePart() == null) return;
 	         if (window.getPartService().getActivePart().getSite() == null) return;
 	         if (window.getPartService().getActivePart().getSite().getPage() == null) return;
-
-	         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	         Date date = new Date();
-	         
-	         // log file Debug operation
-	    	 try {
-	    		 List<String> lines = Arrays.asList("", "", "Debug_Action", "DateTime|"+dateFormat.format(date), "", "");
-	    		 IProject project = getCurrentSelectedProject();
-	    		 TutorPluginLogTracker.assignmentName = project.getName();
-	    		 Client client = new Client();
-//				    svc.sendLogClient(lines);
-	            	InputModel input = new InputModel();
-		    		 input.setNumberRunAttempts(2);
-		    		 client.saveInput(input);
-		    		 
-	    		 getCompilationErrorsFromProblemsView();
-	    		 
-	    	 } catch (IOException e) {
-	    		 // TODO Auto-generated catch block
-	    		 e.printStackTrace();
-	    	 } catch (Exception e) {
-	    		 // TODO Auto-generated catch block
-	    		 e.printStackTrace();
-	    	 }
+    		 
+	         IWorkbenchPage page = window.getActivePage();
+	         ManageListeners manageListeners = new ManageListeners();
+    		 try {
+				InputModel input = manageListeners.debugRequest();
+				HelpView.setBrainValues(input);
+				page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+			} catch (CoreException | IOException | JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				getCompilationErrorsFromProblemsView(page);
+			} catch (CoreException | IOException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	 }
 	 
 	 /**
-	  * Get the current project from the selectionService
-	  * @return projectName
-	  */
-	private IProject getCurrentSelectedProject() {
-		IProject project = null;
-		 ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
-		 ISelection selection = selectionService.getSelection();
-		 
-		 if(selection instanceof IStructuredSelection) {
-			 Object element = ((IStructuredSelection)selection).getFirstElement();
-			 
-			 if (element instanceof IResource) {
-				 project= ((IResource)element).getProject();
-			 } 
-			 else if (element instanceof IPackageFragmentRoot) {
-				 IJavaProject jProject = ((IPackageFragmentRoot)element).getJavaProject();
-				 project = jProject.getProject();
-		     } else if (element instanceof IJavaElement) {
-		    	 IJavaProject jProject= ((IJavaElement)element).getJavaProject();
-		    	 project = jProject.getProject();
-		     }
-		 }
-		return project;
-	}
-	 
-	 private int getTotalLinesOfCode(IContainer container) throws CoreException, IOException {
-		 int loc = 0;
-		 IResource [] members = container.members();
-		 for (IResource member : members) {
-			 if (member instanceof IContainer) {
-				 loc += getTotalLinesOfCode((IContainer)member);
-			 }
-			 else if (member instanceof IFile) {
-				 if (member.getFullPath().toString().endsWith(".java")) {
-					 File temp = new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()+member.getFullPath().toString());
-					 LineNumberReader reader = new LineNumberReader(new FileReader(temp));
-					 reader.skip(Long.MAX_VALUE);
-					 loc += reader.getLineNumber();
-					 reader.close();
-				 }
-			 }
-	     }
-		 return loc;
-	 }
-	 
-	/**
 	 * Get the compilation errors from the Problems View
 	 * @throws CoreException
 	 * @throws ParseException 
 	 * @throws JSONException 
 	 * @throws IOException 
 	 */
-	private void getCompilationErrorsFromProblemsView() throws CoreException, ParseException, JSONException, IOException {
+	private void getCompilationErrorsFromProblemsView(IWorkbenchPage page) throws CoreException, IOException, JSONException {
 		IMarker[] markers = ResourcesPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		if (markers != null && markers.length > 0) {
-			List<String> lines = new ArrayList<String>(); // s.asList(new String[10*markers.length]);
-			for (IMarker m : markers) {
-				lines.add("");
-				lines.add("");
-				lines.add("Compilation_Error");
-				lines.add("Message|"+m.getAttribute(IMarker.MESSAGE));
-				lines.add("FileName|"+m.getResource());
-				lines.add("LineNumber|"+m.getAttribute(IMarker.LINE_NUMBER));
-				lines.add("Priority|"+m.getAttribute(IMarker.PRIORITY));
-				lines.add("Severity|"+m.getAttribute(IMarker.SEVERITY));
-				lines.add("");
-				lines.add("");
-			}
-			
-			if (lines != null && lines.size() > 0 && lines.get(0) == "") {
-				Client client = new Client();
-//			    svc.sendLogClient(lines);
-            	InputModel input = new InputModel();
-	    		 input.setNumberRunAttempts(2);
-	    		 client.saveInput(input);
-			}
+			ManageListeners manageListeners = new ManageListeners();
+			// Getting the first listed compilation error
+			InputModel input = manageListeners.errorCaptureRequest((String) markers[0].getAttribute(IMarker.MESSAGE));
+			HelpView.setBrainValues(input);
+			page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
 		}
 	}
 	 

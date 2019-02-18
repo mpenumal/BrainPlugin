@@ -4,22 +4,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
@@ -38,9 +35,9 @@ public class ManageProject {
 	 * @throws CoreException 
 	 * @throws IOException 
 	 */
-	public void createJavaProject(String projectName, String fileName, String packageName, String className) throws CoreException, IOException {
+	public void createJavaProject(String fileName, String packageName, String className) throws CoreException, IOException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(projectName);
+		IProject project = root.getProject(Constants.PROJECT_NAME);
 		if (!project.exists() ) {
 			project.create(null);
 			project.open(null);
@@ -93,55 +90,32 @@ public class ManageProject {
 			}
 		}
 	}
-	
-	/**
-	 * Save a copy to check updates on next "get" operation
-	 * @param studentCodeFile
-	 * @throws CoreException
-	 * @throws IOException
-	 */
-	public void saveCurrentCodeFile(File studentCodeFile) throws CoreException, IOException {
-		String downloadFolder = Constants.DOWNLOAD_FOLDER_NAME;
-		String directoryPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + 
-				File.separator + downloadFolder;
-
-		File newCopy = new File(directoryPath + File.separator + "new_" + studentCodeFile.getName());
-		// delete if exists
-		newCopy.delete();
-		FileUtils.copyFile(studentCodeFile, newCopy);
-	}
 
 	/**
 	 * Get the current code file, which is the assignment java file that student is working on
 	 * extract student's answer function from the file
-	 * @param projectName
 	 * @return
 	 * @throws CoreException
 	 * @throws IOException 
 	 */
-	public List<String> getStudentMethodFromFile(String projectName) throws CoreException, IOException {
-		List<String> method = new ArrayList<String>();
-		List<String> allCode = new ArrayList<String>();
-		
+	public List<String> getStudentMethodFromFile() throws CoreException, IOException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(projectName);
-		if (project.exists() ) {
-			IResource [] members = project.members();
-			if (members[0] instanceof IFile && members[0].getFullPath().toString().endsWith(".java")) {
-				allCode = Files.readAllLines(Paths.get(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()+members[0].getFullPath().toString()), StandardCharsets.UTF_8);
-			}
-		}
+		IProject project = root.getProject(Constants.PROJECT_NAME);
+		IPath path = new Path(File.separator + "src" + File.separator + Constants.PACKAGE_NAME + File.separator  + Constants.ASSIGNMENT_NAME);
+		File file = project.getFile(path).getLocation().toFile();
+		List<String> allCode = Files.readAllLines(file.toPath());
+		List<String> method = new ArrayList<String>();
 		
 		if (allCode != null && !allCode.isEmpty()) {
 			int startIndex = 0, endIndex = 0;
 			for (int i = 0; i < allCode.size(); i++) {
-				if (allCode.get(i).contains("Complete this function")) {
+				if (allCode.get(i).contains(Constants.STUDENT_FUNCTION_START)) {
 					startIndex = i;
 				}
 				if (startIndex > 0 && endIndex == 0) {
 					method.add(allCode.get(i));
 				}
-				if (allCode.get(i).contains("End of function")) {
+				if (allCode.get(i).contains(Constants.STUDENT_FUNCTION_END)) {
 					endIndex = i;
 					break;
 				}

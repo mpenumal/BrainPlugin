@@ -9,29 +9,12 @@ import com.asu.tutorcompanion.brainplugin.custom.ManageProject;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
-import java.util.List;
 
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.*;
@@ -234,12 +217,11 @@ public class AssignmentQuestionsView extends ViewPart {
 
 					if (fileName.endsWith(".java")) {
 						try {
-							String projectName = fileName.replace(".java", "");
 							String className = fileName;
 							fileName = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString() + File.separator + "AssignmentList_Cosmo_Client" + File.separator + fileName;
 							String packageName = "assignmentPackage";
 							ManageProject manageProject = new ManageProject();
-							manageProject.createJavaProject(projectName, fileName, packageName, className);
+							manageProject.createJavaProject(fileName, packageName, className);
 						} catch (CoreException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -255,6 +237,7 @@ public class AssignmentQuestionsView extends ViewPart {
 						if (fileToOpen.exists() && fileToOpen.isFile()) {
 						    IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
 						    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+						    
 						 
 						    try {
 						        IDE.openEditorOnFileStore(page, fileStore);

@@ -1,262 +1,152 @@
 package com.asu.tutorcompanion.brainplugin.custom;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
 
 public class InputModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private int id;
-	private int NumberOfMethods;
-	private int KeywordMainFound;
-	private int LinesOfCodeTotal;
-	private int KeywordComparatorFound;
-	private int KeywordNewFound;
-	private int KeywordDoubleFound;
-	private int KeyWordFloatFound;
-	private int KeywordIfFound;
-	private int KeywordForWhileDoFound;
-	private int KeywordReturnFound;
-	private int HelpButtonClicked;
-	private int NumberOfCommentLines;
-	private int LinesOfCodeChangedSinceLastRun;
-	private int CyclomaticComplexity;
-	private String ErrorType;
-	private int ErrorTotal;
-	private int ErrorsResolvedTotal;
-	private int NumberRunAttempts;
-	private int RunAttemptsSinceLastHint;
-	private Time SubmissionTimestamp;
-	private Date SubmissionDate;
-	private float TimerValue;
-	private float TimeSinceLastRun;
-	private float TimeIdle;
-	private float TimeTotal;
-	private float TimeWorking;
-	private float TimeWithErrors;
-	private float TimeUntilErrorFixed;
-	private float TimeSinceLastHint;
-	private int AssignmentCompleted;
-	private int AssignmentCompletedSuccessfully;
-	private int ErrorCountSinceLastHint;
-	private float TimeLastEncouragement;
-	private float TimeMostRecentHint;
-	private float TimeSecondMostRecentHint;
-	public int getId() {
+	private long id;
+	private int studentId;
+	private String action;
+	private String assignmentName;
+	private int linesOfCodeTotal;
+	private int keywordComparatorFound;
+	private int keywordNewFound;
+	private int keywordDoubleFound;
+	private int keyWordFloatFound;
+	private int keywordIfFound;
+	private int keywordForWhileDoFound;
+	private int keywordReturnFound;
+	private int numberOfCommentLines;
+	private String errorType;
+	private String submissionDateTime;
+	private int assignmentCompletedSuccessfully;
+	private String messageGiven;
+	private int messageCode;
+	private int feedbackSurvey;
+	private int cyclomaticComplexity;
+	
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
-	public int getNumberOfMethods() {
-		return NumberOfMethods;
+	public int getStudentId() {
+		return studentId;
 	}
-	public void setNumberOfMethods(int numberOfMethods) {
-		NumberOfMethods = numberOfMethods;
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
 	}
-	public int getKeywordMainFound() {
-		return KeywordMainFound;
+	public String getAction() {
+		return action;
 	}
-	public void setKeywordMainFound(int keywordMainFound) {
-		KeywordMainFound = keywordMainFound;
+	public void setAction(String action) {
+		this.action = action;
+	}
+	public String getAssignmentName() {
+		return assignmentName;
+	}
+	public void setAssignmentName(String assignmentName) {
+		this.assignmentName = assignmentName;
 	}
 	public int getLinesOfCodeTotal() {
-		return LinesOfCodeTotal;
+		return linesOfCodeTotal;
 	}
 	public void setLinesOfCodeTotal(int linesOfCodeTotal) {
-		LinesOfCodeTotal = linesOfCodeTotal;
+		this.linesOfCodeTotal = linesOfCodeTotal;
 	}
 	public int getKeywordComparatorFound() {
-		return KeywordComparatorFound;
+		return keywordComparatorFound;
 	}
 	public void setKeywordComparatorFound(int keywordComparatorFound) {
-		KeywordComparatorFound = keywordComparatorFound;
+		this.keywordComparatorFound = keywordComparatorFound;
 	}
 	public int getKeywordNewFound() {
-		return KeywordNewFound;
+		return keywordNewFound;
 	}
 	public void setKeywordNewFound(int keywordNewFound) {
-		KeywordNewFound = keywordNewFound;
+		this.keywordNewFound = keywordNewFound;
 	}
 	public int getKeywordDoubleFound() {
-		return KeywordDoubleFound;
+		return keywordDoubleFound;
 	}
 	public void setKeywordDoubleFound(int keywordDoubleFound) {
-		KeywordDoubleFound = keywordDoubleFound;
+		this.keywordDoubleFound = keywordDoubleFound;
 	}
 	public int getKeyWordFloatFound() {
-		return KeyWordFloatFound;
+		return keyWordFloatFound;
 	}
 	public void setKeyWordFloatFound(int keyWordFloatFound) {
-		KeyWordFloatFound = keyWordFloatFound;
+		this.keyWordFloatFound = keyWordFloatFound;
 	}
 	public int getKeywordIfFound() {
-		return KeywordIfFound;
+		return keywordIfFound;
 	}
 	public void setKeywordIfFound(int keywordIfFound) {
-		KeywordIfFound = keywordIfFound;
+		this.keywordIfFound = keywordIfFound;
 	}
 	public int getKeywordForWhileDoFound() {
-		return KeywordForWhileDoFound;
+		return keywordForWhileDoFound;
 	}
 	public void setKeywordForWhileDoFound(int keywordForWhileDoFound) {
-		KeywordForWhileDoFound = keywordForWhileDoFound;
+		this.keywordForWhileDoFound = keywordForWhileDoFound;
 	}
 	public int getKeywordReturnFound() {
-		return KeywordReturnFound;
+		return keywordReturnFound;
 	}
 	public void setKeywordReturnFound(int keywordReturnFound) {
-		KeywordReturnFound = keywordReturnFound;
-	}
-	public int getHelpButtonClicked() {
-		return HelpButtonClicked;
-	}
-	public void setHelpButtonClicked(int helpButtonClicked) {
-		HelpButtonClicked = helpButtonClicked;
+		this.keywordReturnFound = keywordReturnFound;
 	}
 	public int getNumberOfCommentLines() {
-		return NumberOfCommentLines;
+		return numberOfCommentLines;
 	}
 	public void setNumberOfCommentLines(int numberOfCommentLines) {
-		NumberOfCommentLines = numberOfCommentLines;
-	}
-	public int getLinesOfCodeChangedSinceLastRun() {
-		return LinesOfCodeChangedSinceLastRun;
-	}
-	public void setLinesOfCodeChangedSinceLastRun(int linesOfCodeChangedSinceLastRun) {
-		LinesOfCodeChangedSinceLastRun = linesOfCodeChangedSinceLastRun;
-	}
-	public int getCyclomaticComplexity() {
-		return CyclomaticComplexity;
-	}
-	public void setCyclomaticComplexity(int cyclomaticComplexity) {
-		CyclomaticComplexity = cyclomaticComplexity;
+		this.numberOfCommentLines = numberOfCommentLines;
 	}
 	public String getErrorType() {
-		return ErrorType;
+		return errorType;
 	}
 	public void setErrorType(String errorType) {
-		ErrorType = errorType;
+		this.errorType = errorType;
 	}
-	public int getErrorTotal() {
-		return ErrorTotal;
+	public String getSubmissionDateTime() {
+		return submissionDateTime;
 	}
-	public void setErrorTotal(int errorTotal) {
-		ErrorTotal = errorTotal;
-	}
-	public int getErrorsResolvedTotal() {
-		return ErrorsResolvedTotal;
-	}
-	public void setErrorsResolvedTotal(int errorsResolvedTotal) {
-		ErrorsResolvedTotal = errorsResolvedTotal;
-	}
-	public int getNumberRunAttempts() {
-		return NumberRunAttempts;
-	}
-	public void setNumberRunAttempts(int numberRunAttempts) {
-		NumberRunAttempts = numberRunAttempts;
-	}
-	public int getRunAttemptsSinceLastHint() {
-		return RunAttemptsSinceLastHint;
-	}
-	public void setRunAttemptsSinceLastHint(int runAttemptsSinceLastHint) {
-		RunAttemptsSinceLastHint = runAttemptsSinceLastHint;
-	}
-	public Time getSubmissionTimestamp() {
-		return SubmissionTimestamp;
-	}
-	public void setSubmissionTimestamp(Time submissionTimestamp) {
-		SubmissionTimestamp = submissionTimestamp;
-	}
-	public Date getSubmissionDate() {
-		return SubmissionDate;
-	}
-	public void setSubmissionDate(Date submissionDate) {
-		SubmissionDate = submissionDate;
-	}
-	public float getTimerValue() {
-		return TimerValue;
-	}
-	public void setTimerValue(float timerValue) {
-		TimerValue = timerValue;
-	}
-	public float getTimeSinceLastRun() {
-		return TimeSinceLastRun;
-	}
-	public void setTimeSinceLastRun(float timeSinceLastRun) {
-		TimeSinceLastRun = timeSinceLastRun;
-	}
-	public float getTimeIdle() {
-		return TimeIdle;
-	}
-	public void setTimeIdle(float timeIdle) {
-		TimeIdle = timeIdle;
-	}
-	public float getTimeTotal() {
-		return TimeTotal;
-	}
-	public void setTimeTotal(float timeTotal) {
-		TimeTotal = timeTotal;
-	}
-	public float getTimeWorking() {
-		return TimeWorking;
-	}
-	public void setTimeWorking(float timeWorking) {
-		TimeWorking = timeWorking;
-	}
-	public float getTimeWithErrors() {
-		return TimeWithErrors;
-	}
-	public void setTimeWithErrors(float timeWithErrors) {
-		TimeWithErrors = timeWithErrors;
-	}
-	public float getTimeUntilErrorFixed() {
-		return TimeUntilErrorFixed;
-	}
-	public void setTimeUntilErrorFixed(float timeUntilErrorFixed) {
-		TimeUntilErrorFixed = timeUntilErrorFixed;
-	}
-	public float getTimeSinceLastHint() {
-		return TimeSinceLastHint;
-	}
-	public void setTimeSinceLastHint(float timeSinceLastHint) {
-		TimeSinceLastHint = timeSinceLastHint;
-	}
-	public int getAssignmentCompleted() {
-		return AssignmentCompleted;
-	}
-	public void setAssignmentCompleted(int assignmentCompleted) {
-		AssignmentCompleted = assignmentCompleted;
+	public void setSubmissionDateTime(String submissionDateTime) {
+		this.submissionDateTime = submissionDateTime;
 	}
 	public int getAssignmentCompletedSuccessfully() {
-		return AssignmentCompletedSuccessfully;
+		return assignmentCompletedSuccessfully;
 	}
 	public void setAssignmentCompletedSuccessfully(int assignmentCompletedSuccessfully) {
-		AssignmentCompletedSuccessfully = assignmentCompletedSuccessfully;
+		this.assignmentCompletedSuccessfully = assignmentCompletedSuccessfully;
 	}
-	public int getErrorCountSinceLastHint() {
-		return ErrorCountSinceLastHint;
+	public String getMessageGiven() {
+		return messageGiven;
 	}
-	public void setErrorCountSinceLastHint(int errorCountSinceLastHint) {
-		ErrorCountSinceLastHint = errorCountSinceLastHint;
+	public void setMessageGiven(String messageGiven) {
+		this.messageGiven = messageGiven;
 	}
-	public float getTimeLastEncouragement() {
-		return TimeLastEncouragement;
+	public int getMessageCode() {
+		return messageCode;
 	}
-	public void setTimeLastEncouragement(float timeLastEncouragement) {
-		TimeLastEncouragement = timeLastEncouragement;
+	public void setMessageCode(int messageCode) {
+		this.messageCode = messageCode;
 	}
-	public float getTimeMostRecentHint() {
-		return TimeMostRecentHint;
+	public int getFeedbackSurvey() {
+		return feedbackSurvey;
 	}
-	public void setTimeMostRecentHint(float timeMostRecentHint) {
-		TimeMostRecentHint = timeMostRecentHint;
+	public void setFeedbackSurvey(int feedbackSurvey) {
+		this.feedbackSurvey = feedbackSurvey;
 	}
-	public float getTimeSecondMostRecentHint() {
-		return TimeSecondMostRecentHint;
+	public int getCyclomaticComplexity() {
+		return cyclomaticComplexity;
 	}
-	public void setTimeSecondMostRecentHint(float timeSecondMostRecentHint) {
-		TimeSecondMostRecentHint = timeSecondMostRecentHint;
+	public void setCyclomaticComplexity(int cyclomaticComplexity) {
+		this.cyclomaticComplexity = cyclomaticComplexity;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }
