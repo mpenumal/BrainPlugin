@@ -10,7 +10,6 @@ import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
-import com.asu.tutorcompanion.brainplugin.splashHandlers.InteractiveSplashHandler;
 import com.google.gson.Gson;
 
 public class Client {
@@ -61,7 +60,7 @@ public class Client {
 		String studentId = Constants.DEFAULT_STUDENT_ID;
 		
 		// Comment when using locally
-		studentId = InteractiveSplashHandler.login_userName;
+//		studentId = InteractiveSplashHandler.login_userName;
 	    input.setId(Integer.parseInt(studentId));
 	    
 	    // Local machine URL

@@ -17,6 +17,34 @@ public class Activator extends AbstractUIPlugin implements IStartup {
 	public static final String PLUGIN_ID = "com.asu.tutorcompanion.brainplugin";
 	private static IExecutionListener executionListener;
 	
+	public long inputId;
+	public int brainCode;
+	public String brainMessage;
+	
+	public long getInputId() {
+		return inputId;
+	}
+
+	public void setInputId(long inputId) {
+		this.inputId = inputId;
+	}
+
+	public int getBrainCode() {
+		return brainCode;
+	}
+
+	public void setBrainCode(int brainCode) {
+		this.brainCode = brainCode;
+	}
+
+	public String getBrainMessage() {
+		return brainMessage;
+	}
+
+	public void setBrainMessage(String brainMessage) {
+		this.brainMessage = brainMessage;
+	}
+
 	// The shared instance
 	private static Activator plugin;
 	

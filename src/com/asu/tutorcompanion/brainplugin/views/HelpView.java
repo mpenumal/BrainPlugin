@@ -23,32 +23,32 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import com.asu.tutorcompanion.brainplugin.Activator;
 import com.asu.tutorcompanion.brainplugin.custom.Client;
 import com.asu.tutorcompanion.brainplugin.custom.Constants;
 import com.asu.tutorcompanion.brainplugin.custom.InputModel;
 import com.asu.tutorcompanion.brainplugin.custom.ManageListeners;
 
-public class HelpView extends ViewPart {
+public class HelpView extends ViewPart implements ISelectionListener {
 	
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
 	public static final String ID = "com.asu.tutorcompanion.brainplugin.views.HelpView";
-	public static long inputId = 0;
-	public static int brainCode = 0;
-	public static String brainMessage = "";
 	private static String messageLabel = "This is the help view.";
-	private static TableViewer viewer;
+	private TableViewer viewer;
 	private Action helpAction;
 	private Action doubleClickAction;
 	
 	
-	static class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		public String getColumnText(Object obj, int index) {
 			return getText(obj);
 		}
@@ -80,6 +80,7 @@ public class HelpView extends ViewPart {
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "com.asu.tutorcompanion.brainplugin.helpViewer");
 		getSite().setSelectionProvider(viewer);
+		getSite().getPage().addSelectionListener(this);
 		hookContextMenu();
 		makeActions();
 		hookDoubleClickAction();
@@ -109,11 +110,11 @@ public class HelpView extends ViewPart {
 		helpAction = new Action() {
 			public void run() {
 				if (viewer != null) {
-					clearBrainValues();
 					try {
 						ManageListeners manageListeners = new ManageListeners();
 						InputModel input = manageListeners.helpRequest();
 						setBrainValues(input);
+						createHelpResponse(false);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -143,9 +144,9 @@ public class HelpView extends ViewPart {
 							listItemName.equals(Constants.FEEDBACK_3) || listItemName.equals(Constants.FEEDBACK_4)) {
 						Client client = new Client();
 						InputModel input = new InputModel();
-						input.setId(inputId);
-						input.setMessageCode(brainCode);
-						input.setMessageGiven(brainMessage);
+						input.setId(Activator.getDefault().getInputId());
+						input.setMessageCode(Activator.getDefault().getBrainCode());
+						input.setMessageGiven(Activator.getDefault().getBrainMessage());
 						switch(listItemName)
 						{
 							case Constants.FEEDBACK_4:
@@ -170,17 +171,9 @@ public class HelpView extends ViewPart {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						ArrayList<String> arrList = createFeedbackResponse();
-						viewer.setContentProvider(ArrayContentProvider.getInstance());
-						viewer.setInput(arrList);
-						viewer.setLabelProvider(new ViewLabelProvider());
+						createFeedbackResponse();
 					} else {
-						ArrayList<String> arrList = new ArrayList<String>();
-						arrList.add(Constants.FEEDBACK_MISSED);
-						arrList.addAll(createHelpResponse());
-						viewer.setContentProvider(ArrayContentProvider.getInstance());
-						viewer.setInput(arrList);
-						viewer.setLabelProvider(new ViewLabelProvider());
+						createHelpResponse(true);
 					}
 				}
 			}		
@@ -188,43 +181,47 @@ public class HelpView extends ViewPart {
 	}
 	
 	public static void setBrainValues(InputModel input) {
-		inputId = input.getId();
-		brainCode = input.getMessageCode();
-		brainMessage = input.getMessageGiven();
-		
-		ArrayList<String> arrList = createHelpResponse();
-		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setInput(arrList);
-		viewer.setLabelProvider(new ViewLabelProvider());
+		Activator.getDefault().setInputId(input.getId());
+		Activator.getDefault().setBrainCode(input.getMessageCode());
+		Activator.getDefault().setBrainMessage(input.getMessageGiven());
 	}
 	
 	private void clearBrainValues() {
 		// clear values before new request
-		inputId = 0;
-		brainCode = 0;
-		brainMessage = "";
+		Activator.getDefault().setInputId(0);
+		Activator.getDefault().setBrainCode(0);
+		Activator.getDefault().setBrainMessage("");
 	}
 	
-	private static ArrayList<String> createHelpResponse() {
+	private void createHelpResponse(boolean feedbackMissed) {
 		ArrayList<String> arrList = new ArrayList<String>();
-		arrList.add("code = " + brainCode);
-		arrList.add("message = " + brainMessage);
+		arrList.add("code = " + Activator.getDefault().getBrainCode());
+		arrList.add("message = " + Activator.getDefault().getBrainMessage());
 		arrList.add("");
+		if (feedbackMissed) {
+			arrList.add(Constants.FEEDBACK_MISSED);
+		}
 		arrList.add(Constants.FEEDBACK_REQUEST);
 		arrList.add(Constants.FEEDBACK_4);
 		arrList.add(Constants.FEEDBACK_3);
 		arrList.add(Constants.FEEDBACK_2);
 		arrList.add(Constants.FEEDBACK_1);
-		return arrList;
+		
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setInput(arrList);
+		viewer.setLabelProvider(new ViewLabelProvider());
 	}
 	
-	private ArrayList<String> createFeedbackResponse() {
+	private void createFeedbackResponse() {
 		ArrayList<String> arrList = new ArrayList<String>();
-		arrList.add("code = " + brainCode);
-		arrList.add("message = " + brainMessage);
+		arrList.add("code = " + Activator.getDefault().getBrainCode());
+		arrList.add("message = " + Activator.getDefault().getBrainMessage());
 		arrList.add("");
 		arrList.add(Constants.FEEDBACK_RESPONSE);
-		return arrList;
+		
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setInput(arrList);
+		viewer.setLabelProvider(new ViewLabelProvider());
 	}
 	
 	private void showMessage(String message) {
@@ -263,6 +260,11 @@ public class HelpView extends ViewPart {
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		createHelpResponse(false);
 	}
 
 }

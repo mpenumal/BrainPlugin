@@ -85,7 +85,7 @@ public class AssignmentQuestionsView extends ViewPart {
 
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "com.asu.tutorcompanion.brainplugin.assignmentViewer");
-		getSite().setSelectionProvider(viewer);
+//		getSite().setSelectionProvider(viewer);
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();

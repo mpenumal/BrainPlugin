@@ -7,7 +7,6 @@ import org.eclipse.debug.ui.console.IConsole;
 import org.eclipse.debug.ui.console.IConsoleLineTracker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.ui.PlatformUI;
 
 import com.asu.tutorcompanion.brainplugin.custom.Constants;
 import com.asu.tutorcompanion.brainplugin.custom.InputModel;
@@ -42,13 +41,13 @@ public class TutorPluginLogTracker implements IConsoleLineTracker {
             			ManageListeners manageListeners = new ManageListeners();
             			InputModel input = manageListeners.submitRequest();
             			HelpView.setBrainValues(input);
-            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+//            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
             		} else if (lines.get(0).startsWith("Exception")) {
             			ManageListeners manageListeners = new ManageListeners();
             			// RUNTIME ERRORS call
             			InputModel input = manageListeners.errorCaptureRequest(lines.get(0));
             			HelpView.setBrainValues(input);
-            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+//            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
             		}
             	}
 				

@@ -56,7 +56,7 @@ public class TutorPluginRunListener implements IExecutionListener {
     		 try {
     			 InputModel input = manageListeners.runRequest();
     			 HelpView.setBrainValues(input);
-    			 page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+//    			 page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
 			} catch (CoreException | IOException | JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -86,7 +86,7 @@ public class TutorPluginRunListener implements IExecutionListener {
     		 try {
 				InputModel input = manageListeners.debugRequest();
 				HelpView.setBrainValues(input);
-				page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+//				page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
 			} catch (CoreException | IOException | JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -114,7 +114,7 @@ public class TutorPluginRunListener implements IExecutionListener {
 			// Getting the first listed compilation error
 			InputModel input = manageListeners.errorCaptureRequest((String) markers[0].getAttribute(IMarker.MESSAGE));
 			HelpView.setBrainValues(input);
-			page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
+//			page.showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
 		}
 	}
 	 

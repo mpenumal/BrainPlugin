@@ -24,13 +24,15 @@ public class ManageListeners {
 		Long inputId = client.saveInput(input);
 		input.setId(inputId);
 		
-		TutorBrain tutorBrain = new TutorBrain();
-		Gson gson = new Gson();
-        String jsonString = gson.toJson(input);
-        JSONObject inputJSON = new JSONObject(jsonString);
-		JSONObject jObj = tutorBrain.getMessage(inputJSON);
-		input.setMessageCode(jObj.getInt("messageCode"));
-		input.setMessageGiven(jObj.getString("messageGiven"));
+//		TutorBrain tutorBrain = new TutorBrain();
+//		Gson gson = new Gson();
+//        String jsonString = gson.toJson(input);
+//        JSONObject inputJSON = new JSONObject(jsonString);
+//		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+//		input.setMessageCode(jObj.getInt("messageCode"));
+//		input.setMessageGiven(jObj.getString("messageGiven"));
+		input.setMessageCode(12);
+		input.setMessageGiven("sdfdsfsdf");
 		
 		return input;
 	}
@@ -107,16 +109,16 @@ public class ManageListeners {
 		input.setAction(Constants.SUBMIT_ACTION);
 		input.setAssignmentCompletedSuccessfully(1);
 		
-		Client client = new Client();
-		client.saveInput(input);
-		
-		TutorBrain tutorBrain = new TutorBrain();
-		Gson gson = new Gson();
-        String jsonString = gson.toJson(input);
-        JSONObject inputJSON = new JSONObject(jsonString);
-		JSONObject jObj = tutorBrain.getMessage(inputJSON);
-		input.setMessageCode(jObj.getInt("messageCode"));
-		input.setMessageGiven(jObj.getString("messageGiven"));
+//		Client client = new Client();
+//		client.saveInput(input);
+//		
+//		TutorBrain tutorBrain = new TutorBrain();
+//		Gson gson = new Gson();
+//        String jsonString = gson.toJson(input);
+//        JSONObject inputJSON = new JSONObject(jsonString);
+//		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+//		input.setMessageCode(jObj.getInt("messageCode"));
+//		input.setMessageGiven(jObj.getString("messageGiven"));
 		
 		return input;
 	}
