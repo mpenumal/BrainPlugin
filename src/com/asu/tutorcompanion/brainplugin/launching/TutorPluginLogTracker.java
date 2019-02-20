@@ -40,6 +40,10 @@ public class TutorPluginLogTracker implements IConsoleLineTracker {
             			// SUBMIT Successfully
             			ManageListeners manageListeners = new ManageListeners();
             			InputModel input = manageListeners.submitRequest();
+            			
+            			input.setMessageCode(12);
+            			input.setMessageGiven("sdfdsfsdf");
+            			
             			HelpView.setBrainValues(input);
 //            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
             		} else if (lines.get(0).startsWith("Exception")) {

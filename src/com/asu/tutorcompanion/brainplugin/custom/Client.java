@@ -89,7 +89,13 @@ public class Client {
 	 	String output;
 	 	Long id = null;
 	 	while ((output = br.readLine()) != null) {
-	 		id = Long.parseLong(output);
+	 		int idStartIndex = output.indexOf(":");
+	 		int idEndIndex = output.indexOf(",");
+	 		String outputId = output.substring(idStartIndex + 1, idEndIndex);
+	 		
+	 		//String[] outputStringArr = output.split(":");
+	 		// Error from the statement below because it's the entire JSONObject
+	 		id = Long.parseLong(outputId);
 	 		sb.append(output);
 	 	}
 
