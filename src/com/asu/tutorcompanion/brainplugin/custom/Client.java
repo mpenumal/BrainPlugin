@@ -89,6 +89,9 @@ public class Client {
 	 	String output;
 	 	Long id = null;
 	 	while ((output = br.readLine()) != null) {
+	 		/**
+	 		 * @TODO: Check this part
+	 		 */
 	 		int idStartIndex = output.indexOf(":");
 	 		int idEndIndex = output.indexOf(",");
 	 		String outputId = output.substring(idStartIndex + 1, idEndIndex);

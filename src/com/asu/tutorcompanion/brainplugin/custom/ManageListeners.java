@@ -24,11 +24,13 @@ public class ManageListeners {
 		Long inputId = client.saveInput(input);
 		input.setId(inputId);
 		
-//		TutorBrain tutorBrain = new TutorBrain();
-//		Gson gson = new Gson();
-//        String jsonString = gson.toJson(input);
-//        JSONObject inputJSON = new JSONObject(jsonString);
-//		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		TutorBrain tutorBrain = new TutorBrain();
+		Gson gson = new Gson();
+        String jsonString = gson.toJson(input);
+        JSONObject inputJSON = new JSONObject(jsonString);
+        System.out.println("a");
+		JSONObject jObj = tutorBrain.getMessage(inputJSON);
+		System.out.println("b");
 //		input.setMessageCode(jObj.getInt("messageCode"));
 //		input.setMessageGiven(jObj.getString("messageGiven"));
 		input.setMessageCode(12);
