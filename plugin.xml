@@ -58,7 +58,7 @@
       </splashHandler>
       <splashHandlerProductBinding
             splashId="com.asu.tutorcompanion.brainplugin.splashHandlers.interactive"
-            productId="org.eclipse.epp.package.jee.product">
+            productId="com.asu.tutorcompanion.brainplugin.product">
       </splashHandlerProductBinding>
    </extension>
 </plugin>

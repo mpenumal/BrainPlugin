@@ -29,5 +29,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: com.asu.tutorcompanion.brainplugin
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: src/ExternalJARs/java-json.jar, src/ExternalJARs/gson-2.8.2.jar, src/ExternalJARs/commons-io-2.6.jar, src/ExternalJARs/BrainTutor2.jar,
+Bundle-ClassPath: src/ExternalJARs/java-json.jar, src/ExternalJARs/gson-2.8.2.jar, src/ExternalJARs/commons-io-2.6.jar, src/ExternalJARs/brain.jar,
  .

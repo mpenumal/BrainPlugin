@@ -30,6 +30,8 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 	
 	private Text fTextUsername;
 	
+	private Text fTextCoursename;
+	
 	private Button fButtonOK;
 	
 	private Button fButtonCancel;
@@ -38,9 +40,12 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 	
 	public static String login_userName;
 	
+	public static String login_courseName;
+	
 	public InteractiveSplashHandler() {
 		fCompositeLogin = null;
 		fTextUsername = null;
+		fTextCoursename = null;
 		fButtonOK = null;
 		fButtonCancel = null;
 		fAuthenticated = false;
@@ -137,8 +142,11 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		
 		login_userName = fTextUsername.getText();
 		int userId = parseWithFallback(login_userName);
+		
+		login_courseName = fTextCoursename.getText();
 		// Authentication is successful if a user provides ASU 10 digit userId and any password
-		if (login_userName.length() == 10 && userId != 0) {
+		if ((login_userName.length() == 10 && userId != 0) && 
+				(login_courseName.length() == 6)) {
 			fAuthenticated = true;
 		} else {
 			MessageDialog.openError(
@@ -160,6 +168,10 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		createUILabelUserName();
 		// Create the user name text widget
 		createUITextUserName();
+		// Create the password label
+		createUILabelCourseName();
+		// Create the password text widget
+		createUITextCourseName();
 		// Create the blank label
 		createUILabelBlank();
 		// Create the OK button
@@ -202,6 +214,29 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 	private void createUILabelBlank() {
 		Label label = new Label(fCompositeLogin, SWT.NONE);
 		label.setVisible(false);
+	}
+	 
+	private void createUITextCourseName() {
+		// Create the text widget
+		fTextCoursename = new Text(fCompositeLogin, SWT.BORDER);
+		// Configure layout data
+		GridData data = new GridData(SWT.NONE, SWT.NONE, false, false);
+		data.widthHint = F_TEXT_WIDTH_HINT;
+		data.horizontalSpan = 2;
+		fTextCoursename.setLayoutData(data);		
+	}
+	 
+	private void createUILabelCourseName() {
+		// Create the label
+		Label label = new Label(fCompositeLogin, SWT.NONE);
+		label.setText("Course:"); //$NON-NLS-1$
+		Display display = Display.getCurrent();
+		Color color_white = display.getSystemColor(SWT.COLOR_WHITE);
+		label.setForeground(color_white);
+		// Configure layout data
+		GridData data = new GridData();
+		data.horizontalIndent = F_LABEL_HORIZONTAL_INDENT;
+		label.setLayoutData(data);					
 	}
 
 	/**
@@ -264,5 +299,4 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		// Force shell to inherit the splash background
 		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
 	}
-	
 }
