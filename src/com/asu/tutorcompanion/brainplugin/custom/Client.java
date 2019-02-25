@@ -59,7 +59,7 @@ public class Client {
 		
 		String studentId = Constants.DEFAULT_STUDENT_ID;
 		
-		// Comment when using locally
+		// Comment when using locally - when deployed need this line to collect from splash screen
 //		studentId = InteractiveSplashHandler.login_userName;
 	    input.setId(Integer.parseInt(studentId));
 	    

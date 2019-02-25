@@ -28,13 +28,11 @@ public class ManageListeners {
 		Gson gson = new Gson();
         String jsonString = gson.toJson(input);
         JSONObject inputJSON = new JSONObject(jsonString);
-        System.out.println("a");
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
-		System.out.println("b");
-//		input.setMessageCode(jObj.getInt("messageCode"));
-//		input.setMessageGiven(jObj.getString("messageGiven"));
-		input.setMessageCode(12);
-		input.setMessageGiven("sdfdsfsdf");
+		input.setMessageCode(jObj.getInt("messageCode"));
+		input.setMessageGiven(jObj.getString("message"));
+//		input.setMessageCode(12);
+//		input.setMessageGiven("sdfdsfsdf");
 		
 		return input;
 	}
@@ -55,7 +53,7 @@ public class ManageListeners {
         JSONObject inputJSON = new JSONObject(jsonString);
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
-		input.setMessageGiven(jObj.getString("messageGiven"));
+		input.setMessageGiven(jObj.getString("message"));
 		
 		return input;
 	}
@@ -77,7 +75,7 @@ public class ManageListeners {
         JSONObject inputJSON = new JSONObject(jsonString);
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
-		input.setMessageGiven(jObj.getString("messageGiven"));
+		input.setMessageGiven(jObj.getString("message"));
 		
 		return input;
 	}
@@ -98,7 +96,7 @@ public class ManageListeners {
         JSONObject inputJSON = new JSONObject(jsonString);
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
-		input.setMessageGiven(jObj.getString("messageGiven"));
+		input.setMessageGiven(jObj.getString("message"));
 		
 		return input;
 	}

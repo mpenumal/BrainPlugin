@@ -266,5 +266,4 @@ public class HelpView extends ViewPart implements ISelectionListener {
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		createHelpResponse(false);
 	}
-
 }

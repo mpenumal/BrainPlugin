@@ -41,8 +41,8 @@ public class TutorPluginLogTracker implements IConsoleLineTracker {
             			ManageListeners manageListeners = new ManageListeners();
             			InputModel input = manageListeners.submitRequest();
             			
-            			input.setMessageCode(12);
-            			input.setMessageGiven("sdfdsfsdf");
+            			//input.setMessageCode(12);
+            			//input.setMessageGiven("sdfdsfsdf");
             			
             			HelpView.setBrainValues(input);
 //            			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().showView("com.asu.tutorcompanion.brainplugin.views.HelpView");
