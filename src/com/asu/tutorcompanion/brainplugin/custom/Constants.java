@@ -14,6 +14,9 @@ public final class Constants {
 	public static final String STUDENT_FUNCTION_END = "End of function";
 	public static final String STUDENT_FUNCTION_SUCCESS = "Success!";
 	
+	public static final String STUDENT_ID_ENTRY = "Student_ID_Entry=";
+	public static final String STUDENT_COURSE_ENTRY = "Student_Course_Entry=";
+	
 	public static final String FEEDBACK_REQUEST = "Please provide feedback by double clicking one of the following:";
 	public static final String FEEDBACK_MISSED = "You did not select 1 of the 4 feedback options.";
 	public static final String FEEDBACK_RESPONSE = "Thank you for your feedback.";

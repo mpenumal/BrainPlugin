@@ -7,6 +7,7 @@ public class InputModel implements Serializable {
 	
 	private long id;
 	private int studentId;
+	private String courseName;
 	private String action;
 	private String assignmentName;
 	private int linesOfCodeTotal;
@@ -148,5 +149,11 @@ public class InputModel implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getCourseName() {
+		return courseName;
+	}
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 }

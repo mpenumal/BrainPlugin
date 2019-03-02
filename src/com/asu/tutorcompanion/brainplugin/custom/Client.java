@@ -57,11 +57,6 @@ public class Client {
 	 */
 	public Long saveInput(InputModel input) throws IOException {
 		
-		String studentId = Constants.DEFAULT_STUDENT_ID;
-		
-		// Comment when using locally - when deployed need this line to collect from splash screen
-//		studentId = InteractiveSplashHandler.login_userName;
-	    input.setId(Integer.parseInt(studentId));
 	    
 	    // Local machine URL
 	    URL url = new URL("http://localhost:8080/server/inputs/");
@@ -88,18 +83,18 @@ public class Client {
 	 	StringBuilder sb = new StringBuilder();
 	 	String output;
 	 	Long id = null;
-	 	while ((output = br.readLine()) != null) {
-	 		/**
-	 		 * @TODO: Check this part
-	 		 */
-	 		int idStartIndex = output.indexOf(":");
-	 		int idEndIndex = output.indexOf(",");
-	 		String outputId = output.substring(idStartIndex + 1, idEndIndex);
-	 		
-	 		//String[] outputStringArr = output.split(":");
-	 		// Error from the statement below because it's the entire JSONObject
-	 		id = Long.parseLong(outputId);
-	 		sb.append(output);
+	 	while ((output = br.readLine()) != null && (id == null || id == 0)) {
+	 	// Checks if input object is JSONObject or is already an int
+	 		if (output.startsWith("{")) {
+	 			int idStartIndex = output.indexOf(":");
+		 		int idEndIndex = output.indexOf(",");
+		 		String outputId = output.substring(idStartIndex + 1, idEndIndex);
+		 		id = Long.parseLong(outputId);
+	 		}
+	 		else {
+	 			id = Long.parseLong(output);
+		 		sb.append(output);
+	 		}
 	 	}
 
 	 	conn.disconnect();

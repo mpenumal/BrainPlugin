@@ -105,6 +105,8 @@ public class ManageProject {
 		File file = project.getFile(path).getLocation().toFile();
 		List<String> allCode = Files.readAllLines(file.toPath());
 		List<String> method = new ArrayList<String>();
+		String studentID = "";
+		String courseName = "";
 		
 		if (allCode != null && !allCode.isEmpty()) {
 			int startIndex = 0, endIndex = 0;
@@ -119,8 +121,20 @@ public class ManageProject {
 					endIndex = i;
 					break;
 				}
+				if (allCode.get(i).contains(Constants.STUDENT_ID_ENTRY)) {
+					studentID = allCode.get(i).split(Constants.STUDENT_ID_ENTRY)[1];
+				}
+				if (allCode.get(i).contains(Constants.STUDENT_COURSE_ENTRY)) {
+					courseName = allCode.get(i).split(Constants.STUDENT_COURSE_ENTRY)[1];
+				}
 			}
+			
 		}
+		method.add(studentID);
+		method.add(courseName);
+		System.out.println("Student ID: " + studentID);
+		System.out.println("Course: " + courseName);
+
 		
 		return method;
 	}

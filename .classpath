@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="C:/Users/Melissa/Desktop/BrainPlugin_MyUpdates/BrainPlugin/src/ExternalJARs/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Melissa/Desktop/BrainPlugin_MyUpdates/BrainPlugin/src/ExternalJARs/gson-2.8.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Melissa/Desktop/BrainPlugin_MyUpdates/BrainPlugin/src/ExternalJARs/commons-io-2.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Melissa/Desktop/BrainPlugin_MyUpdates/BrainPlugin/src/ExternalJARs/brain.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Melissa/Documents/Software_Engineering_Degree/Thesis/Code/TutorBrain/target/brain.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
