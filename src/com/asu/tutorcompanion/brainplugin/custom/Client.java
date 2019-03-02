@@ -24,9 +24,11 @@ public class Client {
 				File.separator + downloadFolder;
 		
 		// Local machine URL
-		URL url = new URL("http://localhost:8080/server/assignments");
-		// Manohar AWS URL
-		// URL url = new URL("http://34.224.41.66:8080/assignments");
+		//URL url = new URL("http://localhost:8080/server/assignments");
+		
+		// Melissa AWS URL
+		URL url = new URL("http://18.224.214.12:8080/server/assignments");
+
 
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
@@ -59,9 +61,9 @@ public class Client {
 		
 	    
 	    // Local machine URL
-	    URL url = new URL("http://localhost:8080/server/inputs/");
-	    // AWS URL
-	    //URL url = new URL("http://34.224.41.66:8080/server/inputs/");
+	    //URL url = new URL("http://localhost:8080/server/inputs/");
+	    // Melissa AWS URL
+	    URL url = new URL("http://18.224.214.12:8080/server/inputs/");
 	 			
 	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
@@ -108,9 +110,10 @@ public class Client {
 	 */
 	public void updateInput(InputModel input) throws IOException {	    
 	    // Local machine URL
-	    URL url = new URL("http://localhost:8080/server/inputs/" + input.getId());
-	    // AWS URL
-	    //URL url = new URL("http://34.224.41.66:8080/server/inputs/");
+	    //URL url = new URL("http://localhost:8080/server/inputs/" + input.getId());
+	    
+		// Melissa AWS URL
+	    URL url = new URL("http://18.224.214.12:8080/server/inputs/" + input.getId());
 	 			
 	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
