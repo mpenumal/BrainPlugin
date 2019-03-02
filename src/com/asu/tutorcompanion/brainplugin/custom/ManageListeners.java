@@ -107,6 +107,7 @@ public class ManageListeners {
 		input.setStudentId(studentId);
 		input.setCourseName(courseName);
 		//
+		input.setErrorType(error);
 		
 		// All methods in this file need this
 		Client client = new Client();
