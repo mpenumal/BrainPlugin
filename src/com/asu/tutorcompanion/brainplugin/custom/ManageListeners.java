@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.asu.tutorcompanion.brainplugin.views.HelpView;
 import com.google.gson.Gson;
 
 import thesis_neuroph.thesis_neuroph.TutorBrain;
@@ -46,6 +47,8 @@ public class ManageListeners {
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
 		input.setMessageGiven(jObj.getString("message"));
+		HelpView.setDefaultResponseNeeded(false);
+		HelpView.setFeedbackNeeded(true);
 //		input.setMessageCode(12);
 //		input.setMessageGiven("sdfdsfsdf");
 		
@@ -84,6 +87,8 @@ public class ManageListeners {
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
 		input.setMessageGiven(jObj.getString("message"));
+		HelpView.setDefaultResponseNeeded(false);
+		HelpView.setFeedbackNeeded(true);
 		
 		return input;
 	}
@@ -122,6 +127,8 @@ public class ManageListeners {
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
 		input.setMessageGiven(jObj.getString("message"));
+		HelpView.setDefaultResponseNeeded(false);
+		HelpView.setFeedbackNeeded(true);
 		
 		return input;
 	}
@@ -159,6 +166,8 @@ public class ManageListeners {
 		JSONObject jObj = tutorBrain.getMessage(inputJSON);
 		input.setMessageCode(jObj.getInt("messageCode"));
 		input.setMessageGiven(jObj.getString("message"));
+		HelpView.setDefaultResponseNeeded(false);
+		HelpView.setFeedbackNeeded(true);
 		
 		return input;
 	}
@@ -189,6 +198,8 @@ public class ManageListeners {
 		Long inputId = client.saveInput(input);
 		input.setId(inputId);
 		//
+		HelpView.setDefaultResponseNeeded(false);
+		
 		return input;
 	}
 }

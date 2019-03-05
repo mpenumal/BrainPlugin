@@ -46,6 +46,8 @@ public class HelpView extends ViewPart implements ISelectionListener {
 	private TableViewer viewer;
 	private Action helpAction;
 	private Action doubleClickAction;
+	private static boolean feedbackNeeded = false;
+	private static boolean defaultResponseNeeded = true;
 	
 	
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -114,7 +116,8 @@ public class HelpView extends ViewPart implements ISelectionListener {
 						ManageListeners manageListeners = new ManageListeners();
 						InputModel input = manageListeners.helpRequest();
 						setBrainValues(input);
-						createHelpResponse(false);
+						feedbackNeeded = true;
+						createHelpResponse(true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -147,6 +150,8 @@ public class HelpView extends ViewPart implements ISelectionListener {
 						input.setId(Activator.getDefault().getInputId());
 						input.setMessageCode(Activator.getDefault().getBrainCode());
 						input.setMessageGiven(Activator.getDefault().getBrainMessage());
+						feedbackNeeded = false;
+						
 						switch(listItemName)
 						{
 							case Constants.FEEDBACK_4:
@@ -195,12 +200,14 @@ public class HelpView extends ViewPart implements ISelectionListener {
 	
 	private void createHelpResponse(boolean feedbackMissed) {
 		ArrayList<String> arrList = new ArrayList<String>();
-		arrList.add("code = " + Activator.getDefault().getBrainCode());
+		// Displays the corresponding code for the message given to the students
+		//arrList.add("code = " + Activator.getDefault().getBrainCode());
 		arrList.add("message = " + Activator.getDefault().getBrainMessage());
 		arrList.add("");
 		if (feedbackMissed) {
 			arrList.add(Constants.FEEDBACK_MISSED);
 		}
+		arrList.add("");
 		arrList.add(Constants.FEEDBACK_REQUEST);
 		arrList.add(Constants.FEEDBACK_4);
 		arrList.add(Constants.FEEDBACK_3);
@@ -212,10 +219,28 @@ public class HelpView extends ViewPart implements ISelectionListener {
 		viewer.setLabelProvider(new ViewLabelProvider());
 	}
 	
+	private void createDefaultResponse() {
+		ArrayList<String> arrList = new ArrayList<String>();
+		// Displays the corresponding code for the message given to the students
+		//arrList.add("code = " + Activator.getDefault().getBrainCode());
+		//arrList.add("message = " + Activator.getDefault().getBrainMessage());
+		arrList.add("Please begin your assignment.");
+		
+		//arrList.add(Constants.FEEDBACK_REQUEST);
+		//arrList.add(Constants.FEEDBACK_4);
+		//arrList.add(Constants.FEEDBACK_3);
+		//arrList.add(Constants.FEEDBACK_2);
+		//arrList.add(Constants.FEEDBACK_1);
+		
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setInput(arrList);
+		viewer.setLabelProvider(new ViewLabelProvider());
+	}
+	
 	private void createFeedbackResponse() {
 		ArrayList<String> arrList = new ArrayList<String>();
-		arrList.add("code = " + Activator.getDefault().getBrainCode());
-		arrList.add("message = " + Activator.getDefault().getBrainMessage());
+		//arrList.add("code = " + Activator.getDefault().getBrainCode());
+		//arrList.add("message = " + Activator.getDefault().getBrainMessage());
 		arrList.add("");
 		arrList.add(Constants.FEEDBACK_RESPONSE);
 		
@@ -261,9 +286,33 @@ public class HelpView extends ViewPart implements ISelectionListener {
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
+	
+	public static boolean isFeedbackNeeded() {
+		return feedbackNeeded;
+	}
+
+	public static void setFeedbackNeeded(boolean feedbackNeeded) {
+		HelpView.feedbackNeeded = feedbackNeeded;
+	}
+
+	public static boolean isDefaultResponseNeeded() {
+		return defaultResponseNeeded;
+	}
+
+	public static void setDefaultResponseNeeded(boolean defaultResponseNeeded) {
+		HelpView.defaultResponseNeeded = defaultResponseNeeded;
+	}
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		createHelpResponse(false);
+		if (defaultResponseNeeded) {
+			createDefaultResponse();
+		}
+		else if (!this.feedbackNeeded) {
+			createFeedbackResponse();
+		}
+		else if (this.feedbackNeeded) {
+			createHelpResponse(true);
+		}
 	}
 }
