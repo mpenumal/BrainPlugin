@@ -22,11 +22,7 @@ public class ColumnEvaluation {
 			if (method.get(i).startsWith("//")) {
 				commentedLines += 1;
 			}
-			if (!method.get(i).startsWith("//") && method.get(i).toLowerCase().contains("==") || 
-					method.get(i).toLowerCase().contains("<=") ||
-					method.get(i).toLowerCase().contains(">=") ||
-					method.get(i).toLowerCase().contains("<") ||
-					method.get(i).toLowerCase().contains(">")) {
+			if (!method.get(i).startsWith("//") && method.get(i).toLowerCase().contains("==")) {
 				isComparator = 1;
 			}
 			if (!method.get(i).startsWith("//") && method.get(i).toLowerCase().contains("double")) {
